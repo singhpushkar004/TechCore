@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses | TechCore Academy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .course-hero-stat { text-align:center; padding:20px; border:1px solid var(--border-color); background:var(--bg-card); }
+    .course-hero-stat-num { font-family:'Orbitron',monospace; font-size:2rem; font-weight:900; color:var(--accent-primary); text-shadow:0 0 15px var(--accent-glow-strong); line-height:1; }
+    .course-hero-stat-label { font-family:'Space Mono',monospace; font-size:0.62rem; color:var(--text-muted); letter-spacing:2px; margin-top:4px; }
+    .cat-pill {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:7px 18px; border:1px solid var(--border-color);
+      background:var(--bg-card); font-family:'Space Mono',monospace;
+      font-size:0.68rem; color:var(--text-secondary); cursor:pointer;
+      transition:var(--transition); white-space:nowrap;
+    }
+    .cat-pill:hover, .cat-pill.active {
+      border-color:var(--accent-primary); color:var(--accent-primary);
+      background:var(--accent-glow); box-shadow:0 0 12px var(--accent-glow);
+    }
+    .course-progress-bar { height:3px; background:var(--border-color); margin-top:10px; overflow:hidden; }
+    .course-progress-fill { height:100%; background:var(--accent-primary); box-shadow:0 0 6px var(--accent-glow); transition:width 0.6s ease; }
+    .instructor-mini { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .instructor-avatar-sm { width:28px; height:28px; background:var(--accent-primary); clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:var(--text-inverse); font-weight:900; font-family:'Orbitron',monospace; flex-shrink:0; }
+    .wishlist-course-btn { width:32px; height:32px; background:transparent; border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.8rem; transition:var(--transition); }
+    .wishlist-course-btn:hover { border-color:#ff4444; color:#ff4444; }
+    .tag-pill { display:inline-block; padding:2px 8px; background:var(--bg-secondary); border:1px solid var(--border-color); font-family:'Space Mono',monospace; font-size:0.58rem; color:var(--text-muted); margin:2px; }
+    .course-rating-stars { display:flex; align-items:center; gap:3px; color:var(--star-color,#c9a84c); font-size:0.72rem; }
+    .featured-course-banner {
+      background:var(--bg-card); border:1px solid var(--accent-primary);
+      padding:32px; position:relative; overflow:hidden;
+      clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));
+    }
+    .featured-course-banner::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--accent-primary),transparent);
+    }
+    .learning-path-card {
+      background:var(--bg-card); border:1px solid var(--border-color); padding:24px;
+      transition:var(--transition); position:relative; overflow:hidden;
+    }
+    .learning-path-card:hover { border-color:var(--border-hover); transform:translateY(-3px); box-shadow:var(--shadow-hover); }
+    .path-line { position:absolute; left:40px; top:70px; bottom:20px; width:2px; background:linear-gradient(180deg,var(--accent-primary),transparent); }
+    .path-step { display:flex; align-items:flex-start; gap:14px; margin-bottom:16px; position:relative; z-index:1; }
+    .path-step-dot { width:12px; height:12px; background:var(--accent-primary); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); flex-shrink:0; margin-top:4px; box-shadow:0 0 8px var(--accent-primary); }
+    .path-step-dot.dimmed { background:var(--border-color); box-shadow:none; }
+    .enroll-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
+    .enroll-modal-overlay.open { opacity:1; pointer-events:all; }
+    .enroll-modal { background:var(--bg-card); border:1px solid var(--accent-primary); width:100%; max-width:540px; padding:36px; clip-path:polygon(0 0,calc(100%-20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100%-20px)); position:relative; box-shadow:0 0 60px var(--accent-glow-strong); }
+  </style>
+</head>
+<body>
+<div class="page-transition"></div>
+<div class="toast-container-luxury" id="toast-container"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav-overlay" id="mobile-overlay"></div>
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-header">
+    <div class="nav-brand"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></div>
+    <button class="btn-ghost mobile-nav-close" id="mobile-close"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="services.html">Services</a></li>
+    <li><a href="courses.html" class="active">Courses</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-color);">
+    <div class="theme-toggle" style="justify-content:center;"><button class="theme-btn" data-theme="dark">🌙</button><button class="theme-btn" data-theme="light">☀️</button><button class="theme-btn" data-theme="midnight">💠</button></div>
+  </div>
+</nav>
+
+<!-- NAVBAR -->
+<nav class="navbar-luxury" id="mainNavbar">
+  <div class="container p-1"><div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="services.html">Services</a></li>
+      <li><a href="courses.html" class="active">Courses</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-action-btn"><i class="bi bi-bag"></i><span class="nav-badge cart-count" style="display:none;">0</span></a>
+      <div class="user-dropdown" style="position:relative;"><button class="nav-action-btn"><i class="bi bi-person"></i></button><div class="user-dropdown-menu"><a href="login.html" class="dropdown-item-custom"><i class="bi bi-box-arrow-in-right"></i> Login</a><a href="register.html" class="dropdown-item-custom"><i class="bi bi-person-plus"></i> Register</a><div class="dropdown-divider-custom"></div><a href="orders.html" class="dropdown-item-custom"><i class="bi bi-bag-check"></i> My Orders</a></div></div>
+      <div class="theme-toggle theme-toggle-mobile"><button class="theme-btn" data-theme="dark">🌙</button><button class="theme-btn" data-theme="light">☀️</button><button class="theme-btn" data-theme="midnight">💠</button></div>
+      <button class="mobile-menu-toggle" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </div>
+  </div></div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section style="margin-top:68px;padding:80px 0 60px;background:var(--gradient-hero);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,var(--accent-glow) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,229,255,0.012) 3px,rgba(0,229,255,0.012) 4px);pointer-events:none;"></div>
+  <div style="position:absolute;top:15%;right:5%;font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--border-hover);opacity:0.4;line-height:1.8;">01 ARDUINO_FUNDAMENTALS<br>02 ROS2_COMPLETE<br>03 EDGE_AI_OPENCV<br>04 IOT_ESP32</div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <div class="section-subtitle reveal">// TECHCORE ACADEMY</div>
+        <h1 class="hero-title reveal" style="font-size:clamp(2rem,5vw,3.5rem);">Learn. Build.<br><span class="gold-text">Ship Real Projects.</span></h1>
+        <p style="font-size:1.05rem;color:var(--text-secondary);max-width:520px;margin:1.5rem 0 2rem;line-height:1.8;" class="reveal">Industry-taught courses by engineers who build real products. From blinking an LED to deploying AI on edge hardware.</p>
+        <div class="d-flex gap-3 flex-wrap reveal">
+          <a href="#courses-grid" class="btn-luxury"><i class="bi bi-mortarboard-fill"></i> Browse Courses</a>
+          <a href="#learning-paths" class="btn-luxury-outline"><i class="bi bi-map"></i> Learning Paths</a>
+        </div>
+        <!-- Search Bar -->
+        <div style="margin-top:28px;display:flex;max-width:480px;" class="reveal">
+          <input type="text" class="input-luxury" placeholder="Search courses, topics, instructors..." style="border-right:none;flex:1;" id="courseSearch">
+          <button class="btn-luxury" style="white-space:nowrap;padding:0 22px;clip-path:none;border-left:none;" onclick="filterCourses()"><i class="bi bi-search"></i></button>
+        </div>
+      </div>
+      <div class="col-lg-5 reveal">
+        <div class="row g-3">
+          <div class="col-6"><div class="course-hero-stat"><div class="course-hero-stat-num">120+</div><div class="course-hero-stat-label">Total Courses</div></div></div>
+          <div class="col-6"><div class="course-hero-stat"><div class="course-hero-stat-num">48K+</div><div class="course-hero-stat-label">Students</div></div></div>
+          <div class="col-6"><div class="course-hero-stat"><div class="course-hero-stat-num">4.8★</div><div class="course-hero-stat-label">Avg Rating</div></div></div>
+          <div class="col-6"><div class="course-hero-stat"><div class="course-hero-stat-num">Lifetime</div><div class="course-hero-stat-label">Access</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BREADCRUMB -->
+<div style="background:var(--bg-secondary);border-bottom:1px solid var(--border-color);padding:10px 0;">
+  <div class="container"><nav><ol class="breadcrumb mb-0" style="font-size:0.78rem;font-family:'Space Mono',monospace;"><li class="breadcrumb-item"><a href="index.html" style="color:var(--text-muted);">Home</a></li><li class="breadcrumb-item active" style="color:var(--accent-primary);">Courses</li></ol></nav></div>
+</div>
+
+<!-- ═══════════ FEATURED COURSE ═══════════ -->
+<section style="padding:50px 0 0;" class="section-padding">
+  <div class="container">
+    <div class="featured-course-banner reveal">
+      <div style="position:absolute;top:12px;left:12px;background:var(--accent-primary);color:var(--text-inverse);font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:1.5px;padding:4px 12px;">★ FEATURED COURSE</div>
+      <div class="row g-4 align-items-center" style="padding-top:10px;">
+        <div class="col-lg-8">
+          <div class="section-subtitle mb-2">// MOST POPULAR · 4,200+ STUDENTS</div>
+          <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:800;color:var(--text-primary);margin-bottom:12px;">ROS 2 &amp; Robot Navigation — <span class="gold-text">Complete Bootcamp</span></h2>
+          <p style="font-size:0.95rem;color:var(--text-secondary);max-width:540px;margin-bottom:16px;">Master Robot Operating System 2 from scratch — URDF modelling, Nav2 stack, sensor fusion, SLAM, and deploying real autonomous robots.</p>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;">
+            <div class="course-meta-item"><i class="bi bi-clock"></i> 42 hours</div>
+            <div class="course-meta-item"><i class="bi bi-play-circle"></i> 186 lessons</div>
+            <div class="course-meta-item"><i class="bi bi-download"></i> 24 resources</div>
+            <div class="course-meta-item"><i class="bi bi-translate"></i> English + Hindi</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:20px;">
+            <span class="tag-pill">ROS 2 Humble</span><span class="tag-pill">Python</span><span class="tag-pill">C++</span><span class="tag-pill">SLAM</span><span class="tag-pill">Nav2</span><span class="tag-pill">Gazebo</span><span class="tag-pill">RVIZ</span>
+          </div>
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            <div>
+              <span style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--accent-primary);text-shadow:0 0 15px var(--accent-glow-strong);">₹2,999</span>
+              <span style="font-family:'Space Mono',monospace;font-size:0.8rem;color:var(--text-muted);text-decoration:line-through;margin-left:8px;">₹5,999</span>
+              <span style="background:#39ff14;color:#000;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;padding:2px 8px;margin-left:6px;">-50%</span>
+            </div>
+            <button class="btn-luxury" style="font-size:0.72rem;" onclick="openEnroll('ROS 2 Complete Bootcamp','₹2,999')"><i class="bi bi-mortarboard"></i> Enroll Now</button>
+            <button class="btn-luxury-outline" style="font-size:0.72rem;"><i class="bi bi-play-circle"></i> Preview</button>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="background:var(--bg-secondary);border:1px solid var(--border-color);padding:20px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--accent-primary);letter-spacing:2px;margin-bottom:14px;">// WHAT YOU'LL BUILD</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-check-circle-fill" style="color:var(--accent-primary);"></i> Autonomous wheeled robot</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-check-circle-fill" style="color:var(--accent-primary);"></i> SLAM mapping system</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-check-circle-fill" style="color:var(--accent-primary);"></i> Object detection pipeline</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-check-circle-fill" style="color:var(--accent-primary);"></i> Custom Nav2 planner</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-check-circle-fill" style="color:var(--accent-primary);"></i> ROS 2 + Raspberry Pi deploy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CATEGORY PILLS ═══════════ -->
+<section style="padding:40px 0 0;">
+  <div class="container">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Filter:</span>
+      <button class="cat-pill active" onclick="setCat(this,'all')"><i class="bi bi-grid-fill"></i> All Courses</button>
+      <button class="cat-pill" onclick="setCat(this,'embedded')"><i class="bi bi-cpu"></i> Embedded Systems</button>
+      <button class="cat-pill" onclick="setCat(this,'robotics')"><i class="bi bi-gear-wide-connected"></i> Robotics</button>
+      <button class="cat-pill" onclick="setCat(this,'iot')"><i class="bi bi-wifi"></i> IoT &amp; ESP32</button>
+      <button class="cat-pill" onclick="setCat(this,'ai')"><i class="bi bi-eye"></i> AI / CV</button>
+      <button class="cat-pill" onclick="setCat(this,'fpga')"><i class="bi bi-layers-fill"></i> FPGA &amp; VHDL</button>
+      <button class="cat-pill" onclick="setCat(this,'pcb')"><i class="bi bi-motherboard"></i> PCB Design</button>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <select class="input-luxury" style="width:auto;padding:7px 14px;font-size:0.72rem;" onchange="sortCourses(this.value)">
+          <option value="popular">Sort: Popular</option>
+          <option value="newest">Newest</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COURSES GRID ═══════════ -->
+<section class="section-padding" id="courses-grid">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
+      <div>
+        <div class="section-subtitle">// BROWSE ALL</div>
+        <h2 class="section-title" style="margin:0;">Our <span class="gold-text">Courses</span></h2>
+      </div>
+      <span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-muted);">Showing <strong style="color:var(--accent-primary);" id="courseCount">12</strong> courses</span>
+    </div>
+
+    <div class="row g-4" id="coursesGrid">
+
+      <!-- Course 1: Arduino Fundamentals -->
+      <div class="col-md-6 col-lg-4 reveal stagger-1" data-cat="embedded" data-price="1499" data-rating="4.8">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#020f14,#0a2030);">
+            <i class="bi bi-cpu-fill" style="position:relative;z-index:1;"></i>
+            <span class="course-level level-beginner">Beginner</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm">AS</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Aditya Sharma</span>
+              <span style="margin-left:auto;font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--text-muted);">TechCore Lead</span>
+            </div>
+            <div class="course-title">Arduino Fundamentals — Zero to Projects</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>18 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>82 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>8,200 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.8 (1,240)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">C/C++</span><span class="tag-pill">Arduino IDE</span><span class="tag-pill">Sensors</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹1,499</div><div class="course-original-price">₹2,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('Arduino Fundamentals','₹1,499')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 2: ROS 2 Complete -->
+      <div class="col-md-6 col-lg-4 reveal stagger-2" data-cat="robotics" data-price="2999" data-rating="4.9">
+        <div class="course-card" style="border-color:rgba(0,229,255,0.3);">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#050a14,#0a1a35);">
+            <i class="bi bi-gear-wide-connected" style="position:relative;z-index:1;"></i>
+            <span class="course-level level-intermediate">Intermediate</span>
+            <div style="position:absolute;top:12px;left:12px;z-index:3;background:var(--accent-primary);color:var(--text-inverse);font-family:'Space Mono',monospace;font-size:0.55rem;font-weight:700;padding:2px 8px;letter-spacing:1px;">BESTSELLER</div>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm">RG</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Rohit Gupta</span>
+            </div>
+            <div class="course-title">ROS 2 Complete — Navigation &amp; Autonomy</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>42 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>186 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>4,200 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.9 (892)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">ROS 2</span><span class="tag-pill">Python</span><span class="tag-pill">SLAM</span><span class="tag-pill">Nav2</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹2,999</div><div class="course-original-price">₹5,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('ROS 2 Complete','₹2,999')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 3: Edge AI + OpenCV -->
+      <div class="col-md-6 col-lg-4 reveal stagger-3" data-cat="ai" data-price="3999" data-rating="4.9">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#0a0514,#1a0535);">
+            <i class="bi bi-eye-fill" style="position:relative;z-index:1;color:#bc00ff;"></i>
+            <span class="course-level level-advanced">Advanced</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm" style="background:#bc00ff;">PM</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Dr. Priya Mehta</span>
+            </div>
+            <div class="course-title">Edge AI + OpenCV — Real-Time Vision</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>36 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>148 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>2,800 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.9 (614)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">OpenCV</span><span class="tag-pill">YOLO</span><span class="tag-pill">Jetson</span><span class="tag-pill">TFLite</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹3,999</div><div class="course-original-price">₹7,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('Edge AI + OpenCV','₹3,999')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 4: IoT ESP32 -->
+      <div class="col-md-6 col-lg-4 reveal stagger-4" data-cat="iot" data-price="999" data-rating="4.7">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#020f08,#0a2015);">
+            <i class="bi bi-wifi" style="position:relative;z-index:1;color:#39ff14;"></i>
+            <span class="course-level level-beginner">Beginner</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm" style="background:#39ff14;color:#000;">AS</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Aditya Sharma</span>
+            </div>
+            <div class="course-title">IoT with ESP32 — From Zero to Cloud</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>22 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>94 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>6,100 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.7 (1,890)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">ESP32</span><span class="tag-pill">MQTT</span><span class="tag-pill">AWS IoT</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹999</div><div class="course-original-price">₹1,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('IoT with ESP32','₹999')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 5: C++ Embedded -->
+      <div class="col-md-6 col-lg-4 reveal stagger-1" data-cat="embedded" data-price="2499" data-rating="4.8">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#0a0a0a,#1a1a2e);">
+            <i class="bi bi-code-slash" style="position:relative;z-index:1;color:#c9a84c;"></i>
+            <span class="course-level level-intermediate">Intermediate</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm" style="background:#c9a84c;color:#000;">RG</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Rohit Gupta</span>
+            </div>
+            <div class="course-title">C++ for Embedded Systems — RTOS &amp; Drivers</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>28 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>112 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>3,400 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.8 (720)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">C++</span><span class="tag-pill">FreeRTOS</span><span class="tag-pill">STM32</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹2,499</div><div class="course-original-price">₹4,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('C++ Embedded Systems','₹2,499')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 6: FPGA -->
+      <div class="col-md-6 col-lg-4 reveal stagger-2" data-cat="fpga" data-price="4999" data-rating="4.9">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#0a0505,#200a0a);">
+            <i class="bi bi-layers-fill" style="position:relative;z-index:1;color:#ff6b00;"></i>
+            <span class="course-level level-advanced">Advanced</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm" style="background:#ff6b00;">PM</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Dr. Priya Mehta</span>
+            </div>
+            <div class="course-title">FPGA Design — VHDL &amp; Verilog Masterclass</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>50 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>210 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>1,100 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.9 (287)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">VHDL</span><span class="tag-pill">Verilog</span><span class="tag-pill">Xilinx</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹4,999</div><div class="course-original-price">₹9,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('FPGA Masterclass','₹4,999')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 7: PCB Design -->
+      <div class="col-md-6 col-lg-4 reveal stagger-3" data-cat="pcb" data-price="1999" data-rating="4.7">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#050a08,#0a1e14);">
+            <i class="bi bi-motherboard" style="position:relative;z-index:1;color:#00e5ff;"></i>
+            <span class="course-level level-beginner">Beginner</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm">SK</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Sneha Kapoor</span>
+            </div>
+            <div class="course-title">PCB Design with KiCad — Full Course</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>20 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>88 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>2,600 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.7 (530)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">KiCad</span><span class="tag-pill">Schematic</span><span class="tag-pill">Gerber</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹1,999</div><div class="course-original-price">₹3,999</div></div>
+              <button class="btn-enroll" onclick="openEnroll('PCB Design KiCad','₹1,999')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 8: MicroPython -->
+      <div class="col-md-6 col-lg-4 reveal stagger-4" data-cat="embedded" data-price="799" data-rating="4.6">
+        <div class="course-card">
+          <div class="course-card-img" style="background:linear-gradient(135deg,#020508,#0a1520);">
+            <i class="bi bi-braces" style="position:relative;z-index:1;color:#c9a84c;"></i>
+            <span class="course-level level-beginner">Beginner</span>
+            <button class="wishlist-course-btn" style="position:absolute;top:12px;left:12px;z-index:3;" onclick="toggleWishlistCourse(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="course-card-body">
+            <div class="instructor-mini">
+              <div class="instructor-avatar-sm">AS</div>
+              <span style="font-size:0.78rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Aditya Sharma</span>
+            </div>
+            <div class="course-title">MicroPython for Microcontrollers</div>
+            <div class="course-meta">
+              <div class="course-meta-item"><i class="bi bi-clock"></i>14 hrs</div>
+              <div class="course-meta-item"><i class="bi bi-play-circle"></i>62 lessons</div>
+              <div class="course-meta-item"><i class="bi bi-people-fill"></i>3,800 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+              <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">4.6 (940)</span>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag-pill">MicroPython</span><span class="tag-pill">RP2040</span><span class="tag-pill">ESP32</span></div>
+            <div class="course-price-row">
+              <div><div class="course-price">₹799</div><div class="course-original-price">₹1,599</div></div>
+              <button class="btn-enroll" onclick="openEnroll('MicroPython Microcontrollers','₹799')"><i class="bi bi-mortarboard"></i> Enroll</button>
+            </div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row -->
+
+    <!-- Load More -->
+    <div style="text-align:center;margin-top:40px;" class="reveal">
+      <button class="btn-luxury-outline" style="font-size:0.72rem;" onclick="showToast('Loading more courses...','success')"><i class="bi bi-arrow-down-circle"></i> Load More Courses (112 remaining)</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ LEARNING PATHS ═══════════ -->
+<section class="section-padding" id="learning-paths" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-subtitle">// STRUCTURED LEARNING</div>
+      <h2 class="section-title">Learning <span class="gold-text">Paths</span></h2>
+      <div class="section-divider"></div>
+      <p style="color:var(--text-secondary);max-width:480px;margin:0 auto;">Follow our curated tracks to go from absolute beginner to job-ready engineer.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3 reveal stagger-1">
+        <div class="learning-path-card">
+          <div style="font-size:2rem;color:#39ff14;margin-bottom:12px;"><i class="bi bi-lightning-charge-fill"></i></div>
+          <h5 style="font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:6px;">Maker Path</h5>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">Perfect for hobbyists &amp; beginners. Build 10+ projects.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-left:16px;position:relative;">
+            <div class="path-line"></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">Arduino Fundamentals</div></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">IoT with ESP32</div></div>
+            <div class="path-step"><div class="path-step-dot dimmed"></div><div style="font-size:0.8rem;color:var(--text-muted);">MicroPython</div></div>
+          </div>
+          <a href="#" class="btn-enroll mt-4 w-100 justify-content-center" style="display:flex;">Start Path →</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal stagger-2">
+        <div class="learning-path-card" style="border-color:var(--accent-primary);">
+          <div style="position:absolute;top:-1px;right:16px;background:var(--accent-primary);color:var(--text-inverse);font-family:'Space Mono',monospace;font-size:0.55rem;font-weight:700;padding:3px 10px;">POPULAR</div>
+          <div style="font-size:2rem;color:var(--accent-primary);margin-bottom:12px;margin-top:10px;"><i class="bi bi-robot"></i></div>
+          <h5 style="font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:6px;">Robotics Engineer</h5>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">From basics to autonomous robot builds.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-left:16px;position:relative;">
+            <div class="path-line"></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">C++ Embedded</div></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">ROS 2 Complete</div></div>
+            <div class="path-step"><div class="path-step-dot dimmed"></div><div style="font-size:0.8rem;color:var(--text-muted);">Edge AI + OpenCV</div></div>
+          </div>
+          <a href="#" class="btn-enroll mt-4 w-100 justify-content-center" style="display:flex;">Start Path →</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal stagger-3">
+        <div class="learning-path-card">
+          <div style="font-size:2rem;color:#bc00ff;margin-bottom:12px;"><i class="bi bi-eye-fill"></i></div>
+          <h5 style="font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:6px;">AI Vision Engineer</h5>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">Deploy vision systems on edge hardware.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-left:16px;position:relative;">
+            <div class="path-line"></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">Python Fundamentals</div></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">Edge AI + OpenCV</div></div>
+            <div class="path-step"><div class="path-step-dot dimmed"></div><div style="font-size:0.8rem;color:var(--text-muted);">Advanced Deep Learning</div></div>
+          </div>
+          <a href="#" class="btn-enroll mt-4 w-100 justify-content-center" style="display:flex;">Start Path →</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 reveal stagger-4">
+        <div class="learning-path-card">
+          <div style="font-size:2rem;color:#ff6b00;margin-bottom:12px;"><i class="bi bi-layers-fill"></i></div>
+          <h5 style="font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:6px;">Hardware Design</h5>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">PCB design, FPGA, and product development.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-left:16px;position:relative;">
+            <div class="path-line"></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">PCB Design KiCad</div></div>
+            <div class="path-step"><div class="path-step-dot"></div><div style="font-size:0.8rem;color:var(--text-secondary);">C++ Embedded</div></div>
+            <div class="path-step"><div class="path-step-dot dimmed"></div><div style="font-size:0.8rem;color:var(--text-muted);">FPGA Masterclass</div></div>
+          </div>
+          <a href="#" class="btn-enroll mt-4 w-100 justify-content-center" style="display:flex;">Start Path →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ INSTRUCTORS ═══════════ -->
+<section class="section-padding">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-subtitle">// TAUGHT BY ENGINEERS</div>
+      <h2 class="section-title">Meet Your <span class="gold-text">Instructors</span></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3 reveal stagger-1"><div class="team-card"><div class="team-avatar"><i class="bi bi-person-fill"></i></div><div style="padding:16px;"><div class="team-name">Aditya Sharma</div><div class="team-role">Embedded Systems</div><div style="font-size:0.78rem;color:var(--text-muted);margin:8px 0;">4 Courses · 18,000+ students · IIT Kanpur</div><div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><span style="margin-left:5px;font-size:0.7rem;color:var(--text-muted);">4.8</span></div></div></div></div>
+      <div class="col-sm-6 col-lg-3 reveal stagger-2"><div class="team-card"><div class="team-avatar"><i class="bi bi-person-fill"></i></div><div style="padding:16px;"><div class="team-name">Rohit Gupta</div><div class="team-role">Robotics &amp; ROS 2</div><div style="font-size:0.78rem;color:var(--text-muted);margin:8px 0;">3 Courses · 8,600+ students · 8yr DRDO</div><div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><span style="margin-left:5px;font-size:0.7rem;color:var(--text-muted);">4.9</span></div></div></div></div>
+      <div class="col-sm-6 col-lg-3 reveal stagger-3"><div class="team-card"><div class="team-avatar"><i class="bi bi-person-fill"></i></div><div style="padding:16px;"><div class="team-name">Dr. Priya Mehta</div><div class="team-role">AI &amp; FPGA</div><div style="font-size:0.78rem;color:var(--text-muted);margin:8px 0;">2 Courses · 3,900+ students · NIT Allahabad PhD</div><div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><span style="margin-left:5px;font-size:0.7rem;color:var(--text-muted);">4.9</span></div></div></div></div>
+      <div class="col-sm-6 col-lg-3 reveal stagger-4"><div class="team-card"><div class="team-avatar"><i class="bi bi-person-fill"></i></div><div style="padding:16px;"><div class="team-name">Sneha Kapoor</div><div class="team-role">PCB &amp; Hardware</div><div style="font-size:0.78rem;color:var(--text-muted);margin:8px 0;">2 Courses · 4,200+ students · Ex-Qualcomm</div><div class="course-rating-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><span style="margin-left:5px;font-size:0.7rem;color:var(--text-muted);">4.7</span></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ENROLL MODAL ═══════════ -->
+<div class="enroll-modal-overlay" id="enrollModal" onclick="if(event.target===this)closeEnroll()">
+  <div class="enroll-modal">
+    <button onclick="closeEnroll()" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;"><i class="bi bi-x-lg"></i></button>
+    <div class="section-subtitle mb-2">// ENROLL NOW</div>
+    <h3 style="font-family:'Orbitron',monospace;font-size:1.1rem;margin-bottom:6px;" id="modalCourseName">Course Name</h3>
+    <div style="font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--accent-primary);margin-bottom:20px;text-shadow:0 0 15px var(--accent-glow);" id="modalCoursePrice">₹0</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);">
+      <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-infinity" style="color:var(--accent-primary);"></i> Lifetime access</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-phone" style="color:var(--accent-primary);"></i> Mobile + Desktop</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-award" style="color:var(--accent-primary);"></i> Certificate of completion</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);"><i class="bi bi-arrow-counterclockwise" style="color:var(--accent-primary);"></i> 30-day money back guarantee</div>
+    </div>
+    <div class="form-group-luxury"><label class="label-luxury">Email Address</label><input type="email" class="input-luxury" placeholder="your@email.com"></div>
+    <button class="btn-luxury w-100 justify-content-center" style="font-size:0.72rem;padding:16px;" onclick="closeEnroll();showToast('Enrollment successful! Check your email.','success')"><i class="bi bi-mortarboard-fill"></i> Confirm Enrollment</button>
+    <p style="text-align:center;font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);margin-top:12px;">30-day refund policy · No questions asked</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-luxury">
+  <div class="container"><div class="row g-4 pb-4">
+    <div class="col-12 col-md-4 footer-brand"><div class="nav-brand mb-3"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></div><p>Powering the next generation of engineers across India.</p><div class="social-links"><a href="#" class="social-link"><i class="bi bi-instagram"></i></a><a href="#" class="social-link"><i class="bi bi-youtube"></i></a><a href="#" class="social-link"><i class="bi bi-github"></i></a><a href="#" class="social-link"><i class="bi bi-linkedin"></i></a></div></div>
+    <div class="col-sm-6 col-md-2"><div class="footer-heading">Quick Links</div><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="courses.html">Courses</a></li><li><a href="about.html">About</a></li></ul></div>
+    <div class="col-sm-6 col-md-2"><div class="footer-heading">Academy</div><ul class="footer-links"><li><a href="#">All Courses</a></li><li><a href="#">Learning Paths</a></li><li><a href="#">Certificates</a></li><li><a href="#">Instructors</a></li></ul></div>
+    <div class="col-md-4"><div class="footer-heading">Contact</div><div class="footer-contact-item"><div class="footer-contact-icon"><i class="bi bi-geo-alt"></i></div><div class="footer-contact-text">Tech Park, Hazratganj, Lucknow — 226001</div></div><div class="footer-contact-item"><div class="footer-contact-icon"><i class="bi bi-envelope"></i></div><div class="footer-contact-text">academy@techcore.in</div></div></div>
+  </div></div>
+  <div class="footer-bottom"><div class="container"><p>© 2025 TechCore Academy. All Rights Reserved.</p></div></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+function setCat(el, cat) {
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const cards = document.querySelectorAll('#coursesGrid > div[data-cat]');
+  let count = 0;
+  cards.forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) { c.style.display = ''; count++; }
+    else c.style.display = 'none';
+  });
+  document.getElementById('courseCount').textContent = count;
+}
+function sortCourses(val) {
+  const grid = document.getElementById('coursesGrid');
+  const cards = [...grid.querySelectorAll('div[data-cat]')];
+  cards.sort((a,b) => {
+    if (val === 'price-low') return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+    if (val === 'price-high') return parseInt(b.dataset.price) - parseInt(a.dataset.price);
+    if (val === 'rating') return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+function openEnroll(name, price) {
+  document.getElementById('modalCourseName').textContent = name;
+  document.getElementById('modalCoursePrice').textContent = price;
+  document.getElementById('enrollModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeEnroll() {
+  document.getElementById('enrollModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleWishlistCourse(btn) {
+  const icon = btn.querySelector('i');
+  if (icon.classList.contains('bi-heart')) {
+    icon.classList.replace('bi-heart','bi-heart-fill');
+    btn.style.color = '#ff4444'; btn.style.borderColor = '#ff4444';
+    showToast('Added to wishlist','success');
+  } else {
+    icon.classList.replace('bi-heart-fill','bi-heart');
+    btn.style.color = ''; btn.style.borderColor = '';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeEnroll(); });
+</script>
+</body>
+</html>

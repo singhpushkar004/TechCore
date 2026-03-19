@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | TechCore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ════════════════════════════════════════
+       ADMIN DASHBOARD — TECHCORE
+       Full dark cyberpunk admin UI
+    ════════════════════════════════════════ */
+    :root {
+      --bg: #020508;
+      --bg2: #060d12;
+      --bg3: #0a141c;
+      --bg4: #0f1e2a;
+      --accent: #00e5ff;
+      --accent2: #00fff7;
+      --accent-glow: rgba(0,229,255,0.18);
+      --accent-glow2: rgba(0,229,255,0.45);
+      --green: #39ff14;
+      --orange: #ff6b00;
+      --red: #ff3355;
+      --purple: #bc00ff;
+      --gold: #c9a84c;
+      --border: rgba(0,229,255,0.1);
+      --border-h: rgba(0,229,255,0.35);
+      --text: #e0f7ff;
+      --text2: #7ab8cc;
+      --text3: #2d5566;
+      --sidebar-w: 240px;
+      --topbar-h: 60px;
+      --font-head: 'Orbitron', monospace;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'Rajdhani', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-brand {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 20px; border-bottom: 1px solid var(--border);
+    }
+    .sidebar-brand-icon {
+      width: 36px; height: 36px;
+      background: var(--accent); color: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      box-shadow: 0 0 15px var(--accent-glow2); flex-shrink: 0;
+    }
+    .sidebar-brand-text { font-family: var(--font-head); font-size: 0.85rem; font-weight: 800; color: var(--text); line-height: 1.1; }
+    .sidebar-brand-sub { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text3); letter-spacing: 1.5px; }
+
+    .sidebar-section-label {
+      font-family: var(--font-mono); font-size: 0.55rem; color: var(--text3);
+      letter-spacing: 2px; text-transform: uppercase; padding: 18px 20px 6px;
+    }
+    .nav-item-admin {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; cursor: pointer; border: none; background: transparent;
+      width: 100%; font-family: var(--font-mono); font-size: 0.68rem; color: var(--text2);
+      transition: all 0.2s ease; text-decoration: none; position: relative;
+    }
+    .nav-item-admin:hover { color: var(--accent); background: var(--accent-glow); }
+    .nav-item-admin.active {
+      color: var(--accent); background: var(--accent-glow);
+      border-left: 2px solid var(--accent);
+    }
+    .nav-item-admin i { font-size: 0.9rem; width: 18px; flex-shrink: 0; }
+    .nav-badge-admin {
+      margin-left: auto; background: var(--accent); color: var(--bg);
+      font-size: 0.55rem; font-weight: 900; padding: 1px 6px;
+      font-family: var(--font-mono);
+    }
+    .sidebar-user {
+      margin-top: auto; padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-avatar {
+      width: 32px; height: 32px; background: var(--accent);
+      clip-path: polygon(10px 0%,100% 0%,calc(100%-10px) 100%,0% 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-size: 0.65rem; color: var(--bg); font-weight: 900; flex-shrink: 0;
+    }
+    .sidebar-username { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text); }
+    .sidebar-role { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text3); }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: var(--topbar-h);
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px; padding: 0 24px; z-index: 100;
+    }
+    .topbar-title { font-family: var(--font-head); font-size: 0.78rem; color: var(--text); font-weight: 700; flex: 1; }
+    .topbar-search {
+      display: flex; align-items: center; gap: 0;
+      background: var(--bg3); border: 1px solid var(--border); padding: 0 14px;
+      width: 240px;
+    }
+    .topbar-search input {
+      background: transparent; border: none; outline: none;
+      font-family: var(--font-mono); font-size: 0.7rem; color: var(--text);
+      padding: 8px 10px; width: 100%;
+    }
+    .topbar-search input::placeholder { color: var(--text3); }
+    .topbar-search i { color: var(--text3); font-size: 0.8rem; }
+    .topbar-btn {
+      width: 36px; height: 36px; background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 0.85rem; transition: all 0.2s; position: relative;
+      flex-shrink: 0;
+    }
+    .topbar-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .topbar-notif-dot {
+      position: absolute; top: 6px; right: 6px; width: 7px; height: 7px;
+      background: var(--red); border-radius: 50%; border: 1.5px solid var(--bg2);
+    }
+
+    /* ── MAIN ── */
+    .main-wrap { margin-left: var(--sidebar-w); margin-top: var(--topbar-h); flex: 1; padding: 28px 24px 40px; min-height: calc(100vh - var(--topbar-h)); }
+
+    /* ── KPI CARDS ── */
+    .kpi-card {
+      background: var(--bg3); border: 1px solid var(--border); padding: 22px;
+      transition: all 0.25s; position: relative; overflow: hidden;
+      clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+    }
+    .kpi-card::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:0; transition:opacity 0.3s; }
+    .kpi-card:hover { border-color: var(--border-h); box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px); }
+    .kpi-card:hover::after { opacity: 1; }
+    .kpi-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .kpi-value { font-family: var(--font-head); font-size: 1.9rem; font-weight: 900; color: var(--text); line-height: 1; text-shadow: 0 0 12px var(--accent-glow2); }
+    .kpi-icon { position: absolute; right: 18px; top: 18px; font-size: 1.4rem; opacity: 0.15; }
+    .kpi-delta { font-family: var(--font-mono); font-size: 0.62rem; margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+    .delta-up { color: var(--green); }
+    .delta-down { color: var(--red); }
+
+    /* ── SECTION HEADER ── */
+    .section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    .section-hd-title { font-family: var(--font-head); font-size: 0.78rem; color: var(--text); font-weight: 700; }
+    .section-hd-sub { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text3); }
+
+    /* ── TABLE ── */
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table th {
+      font-family: var(--font-mono); font-size: 0.58rem; color: var(--text3);
+      letter-spacing: 2px; text-transform: uppercase; padding: 10px 16px;
+      background: var(--bg2); border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap;
+    }
+    .admin-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text2); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: var(--bg4); color: var(--text); }
+    .admin-table .product-thumb { width: 36px; height: 36px; background: var(--bg2); border: 1px solid var(--border); overflow: hidden; flex-shrink: 0; }
+    .admin-table .product-thumb img { width: 100%; height: 100%; object-fit: cover; filter: hue-rotate(180deg); }
+    .tbl-name { font-family: var(--font-head); font-size: 0.72rem; color: var(--text); }
+    .tbl-sub { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text3); }
+
+    /* ── STATUS BADGES ── */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 10px; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; white-space: nowrap;
+    }
+    .s-delivered { background: rgba(57,255,20,0.12); color: var(--green); border: 1px solid rgba(57,255,20,0.3); }
+    .s-shipped { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.25); }
+    .s-processing { background: rgba(255,107,0,0.1); color: var(--orange); border: 1px solid rgba(255,107,0,0.25); }
+    .s-cancelled { background: rgba(255,51,85,0.1); color: var(--red); border: 1px solid rgba(255,51,85,0.25); }
+    .s-active { background: rgba(57,255,20,0.12); color: var(--green); border: 1px solid rgba(57,255,20,0.3); }
+    .s-draft { background: rgba(45,85,102,0.3); color: var(--text3); border: 1px solid var(--border); }
+    .s-low { background: rgba(255,51,85,0.1); color: var(--red); border: 1px solid rgba(255,51,85,0.25); }
+
+    /* ── MINI CHART BAR ── */
+    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+    .mc-bar { flex: 1; background: var(--accent); opacity: 0.4; transition: opacity 0.2s; min-width: 6px; border-radius: 1px; }
+    .mc-bar:hover { opacity: 1; }
+    .mc-bar.highlight { background: var(--accent); opacity: 1; box-shadow: 0 0 8px var(--accent-glow2); }
+
+    /* ── CARD BASE ── */
+    .admin-card { background: var(--bg3); border: 1px solid var(--border); padding: 22px; }
+    .admin-card-sm { background: var(--bg3); border: 1px solid var(--border); padding: 16px; }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-item { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .activity-msg { font-size: 0.85rem; color: var(--text2); line-height: 1.5; }
+    .activity-msg strong { color: var(--text); }
+    .activity-time { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text3); white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+
+    /* ── BTN ── */
+    .btn-admin { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: var(--accent); border: none; color: var(--bg); font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+    .btn-admin:hover { background: var(--accent2); box-shadow: 0 0 12px var(--accent-glow2); }
+    .btn-admin-ghost { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: transparent; border: 1px solid var(--border); color: var(--text2); font-family: var(--font-mono); font-size: 0.62rem; cursor: pointer; transition: all 0.2s; }
+    .btn-admin-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-icon-admin { width: 30px; height: 30px; background: transparent; border: 1px solid var(--border); color: var(--text3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s; }
+    .btn-icon-admin:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-icon-admin.red:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── PROGRESS RING ── */
+    .prog-ring { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+    .prog-ring svg { transform: rotate(-90deg); }
+    .prog-ring-val { position: absolute; font-family: var(--font-head); font-size: 0.9rem; font-weight: 900; color: var(--accent); }
+
+    /* ── DONUT CHART ── */
+    .donut-legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .donut-dot { width: 10px; height: 10px; flex-shrink: 0; }
+    .donut-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text2); }
+    .donut-pct { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text); margin-left: auto; }
+
+    /* ── STOCK BAR ── */
+    .stock-bar { height: 4px; background: var(--border); margin-top: 6px; overflow: hidden; }
+    .stock-fill { height: 100%; transition: width 0.5s ease; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--border-h); }
+
+    /* ── MOBILE SIDEBAR TOGGLE ── */
+    .sidebar-toggle { display: none; position: fixed; bottom: 24px; left: 24px; z-index: 300; width: 44px; height: 44px; background: var(--accent); border: none; color: var(--bg); cursor: pointer; font-size: 1.1rem; box-shadow: 0 0 20px var(--accent-glow2); clip-path: polygon(6px 0%,100% 0%,calc(100%-6px) 100%,0% 100%); align-items: center; justify-content: center; }
+
+    .page-section { display: none; }
+    .page-section.active-section { display: block; }
+
+    .input-admin { width: 100%; padding: 9px 14px; background: var(--bg2); border: 1px solid var(--border); color: var(--text); font-family: var(--font-mono); font-size: 0.72rem; outline: none; }
+    .input-admin:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+    .input-admin::placeholder { color: var(--text3); }
+
+    @media(max-width:991px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrap { margin-left: 0; }
+      .topbar { left: 0; }
+      .sidebar-toggle { display: flex; }
+      .topbar-search { width: 160px; }
+    }
+    @media(max-width:576px) {
+      .main-wrap { padding: 18px 14px 40px; }
+      .topbar { padding: 0 14px; gap: 10px; }
+      .topbar-search { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-icon"><i class="bi bi-cpu-fill"></i></div>
+    <div>
+      <div class="sidebar-brand-text">TechCore</div>
+      <div class="sidebar-brand-sub">ADMIN PANEL</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main</div>
+  <button class="nav-item-admin active" onclick="showPage('dashboard',this)"><i class="bi bi-speedometer2"></i> Dashboard</button>
+
+  <div class="sidebar-section-label">Store</div>
+  <button class="nav-item-admin" onclick="showPage('orders',this)"><i class="bi bi-bag-check"></i> Orders <span class="nav-badge-admin">12</span></button>
+  <button class="nav-item-admin" onclick="showPage('products',this)"><i class="bi bi-cpu"></i> Products</button>
+  <button class="nav-item-admin" onclick="showPage('inventory',this)"><i class="bi bi-boxes"></i> Inventory <span class="nav-badge-admin" style="background:var(--red);">3</span></button>
+  <button class="nav-item-admin" onclick="showPage('customers',this)"><i class="bi bi-people-fill"></i> Customers</button>
+
+  <div class="sidebar-section-label">Academy</div>
+  <button class="nav-item-admin" onclick="showPage('courses-admin',this)"><i class="bi bi-mortarboard-fill"></i> Courses</button>
+  <button class="nav-item-admin" onclick="showPage('enrollments',this)"><i class="bi bi-person-check"></i> Enrollments</button>
+
+  <div class="sidebar-section-label">Business</div>
+  <button class="nav-item-admin" onclick="showPage('services-admin',this)"><i class="bi bi-tools"></i> Service Requests <span class="nav-badge-admin">5</span></button>
+  <button class="nav-item-admin" onclick="showPage('analytics',this)"><i class="bi bi-graph-up-arrow"></i> Analytics</button>
+  <button class="nav-item-admin" onclick="showPage('coupons',this)"><i class="bi bi-ticket-perforated"></i> Coupons</button>
+
+  <div class="sidebar-section-label">System</div>
+  <button class="nav-item-admin" onclick="showPage('settings',this)"><i class="bi bi-gear-fill"></i> Settings</button>
+  <a href="index.html" class="nav-item-admin" style="color:var(--orange);"><i class="bi bi-box-arrow-up-right"></i> View Store</a>
+
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">A</div>
+    <div>
+      <div class="sidebar-username">Aditya Sharma</div>
+      <div class="sidebar-role">Super Admin</div>
+    </div>
+    <button class="btn-icon-admin" style="margin-left:auto;" title="Logout" onclick="if(confirm('Logout?'))window.location='login.html'"><i class="bi bi-box-arrow-right"></i></button>
+  </div>
+</aside>
+
+<!-- ═══════════ TOPBAR ═══════════ -->
+<div class="topbar">
+  <div class="topbar-title" id="topbarTitle">// DASHBOARD OVERVIEW</div>
+  <div class="topbar-search">
+    <i class="bi bi-search"></i>
+    <input type="text" placeholder="Search orders, products...">
+  </div>
+  <button class="topbar-btn" title="Notifications"><i class="bi bi-bell"></i><div class="topbar-notif-dot"></div></button>
+  <button class="topbar-btn" title="Messages"><i class="bi bi-chat-dots"></i></button>
+  <button class="topbar-btn" title="Refresh" onclick="showToast('Data refreshed','success')"><i class="bi bi-arrow-clockwise"></i></button>
+  <div style="width:32px;height:32px;background:var(--accent);clip-path:polygon(8px 0%,100% 0%,calc(100%-8px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:0.6rem;color:var(--bg);font-weight:900;cursor:pointer;">A</div>
+</div>
+
+<!-- ═══════════ MAIN CONTENT ═══════════ -->
+<main class="main-wrap">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="page-section active-section" id="pg-dashboard">
+
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="kpi-card">
+          <i class="bi bi-bag-fill kpi-icon" style="color:var(--accent);"></i>
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-value">₹4.2L</div>
+          <div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+18.4% vs last month</div>
+          <div class="mini-chart" style="margin-top:12px;">
+            <div class="mc-bar" style="height:40%"></div><div class="mc-bar" style="height:60%"></div><div class="mc-bar" style="height:45%"></div><div class="mc-bar" style="height:70%"></div><div class="mc-bar" style="height:55%"></div><div class="mc-bar" style="height:80%"></div><div class="mc-bar highlight" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="kpi-card">
+          <i class="bi bi-cart-check-fill kpi-icon" style="color:var(--green);"></i>
+          <div class="kpi-label">Orders Today</div>
+          <div class="kpi-value" style="color:var(--green);text-shadow:0 0 12px rgba(57,255,20,0.4);">47</div>
+          <div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+12 since yesterday</div>
+          <div class="mini-chart" style="margin-top:12px;">
+            <div class="mc-bar" style="height:50%;background:var(--green);"></div><div class="mc-bar" style="height:30%;background:var(--green);"></div><div class="mc-bar" style="height:70%;background:var(--green);"></div><div class="mc-bar" style="height:50%;background:var(--green);"></div><div class="mc-bar" style="height:80%;background:var(--green);"></div><div class="mc-bar" style="height:60%;background:var(--green);"></div><div class="mc-bar highlight" style="height:100%;background:var(--green);box-shadow:0 0 8px rgba(57,255,20,0.5);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="kpi-card">
+          <i class="bi bi-people-fill kpi-icon" style="color:var(--purple);"></i>
+          <div class="kpi-label">New Customers</div>
+          <div class="kpi-value" style="color:var(--purple);text-shadow:0 0 12px rgba(188,0,255,0.4);">124</div>
+          <div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+5.3% this week</div>
+          <div class="mini-chart" style="margin-top:12px;">
+            <div class="mc-bar" style="height:30%;background:var(--purple);"></div><div class="mc-bar" style="height:55%;background:var(--purple);"></div><div class="mc-bar" style="height:40%;background:var(--purple);"></div><div class="mc-bar" style="height:65%;background:var(--purple);"></div><div class="mc-bar" style="height:75%;background:var(--purple);"></div><div class="mc-bar" style="height:55%;background:var(--purple);"></div><div class="mc-bar highlight" style="height:90%;background:var(--purple);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="kpi-card">
+          <i class="bi bi-mortarboard-fill kpi-icon" style="color:var(--gold);"></i>
+          <div class="kpi-label">Course Enrollments</div>
+          <div class="kpi-value" style="color:var(--gold);text-shadow:0 0 12px rgba(201,168,76,0.4);">89</div>
+          <div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+22% this week</div>
+          <div class="mini-chart" style="margin-top:12px;">
+            <div class="mc-bar" style="height:40%;background:var(--gold);"></div><div class="mc-bar" style="height:60%;background:var(--gold);"></div><div class="mc-bar" style="height:50%;background:var(--gold);"></div><div class="mc-bar" style="height:75%;background:var(--gold);"></div><div class="mc-bar" style="height:65%;background:var(--gold);"></div><div class="mc-bar" style="height:80%;background:var(--gold);"></div><div class="mc-bar highlight" style="height:95%;background:var(--gold);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <!-- Revenue Chart -->
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="section-hd">
+            <div><div class="section-hd-title">Revenue Overview</div><div class="section-hd-sub">// Last 12 months · Product + Courses + Services</div></div>
+            <select class="input-admin" style="width:auto;padding:6px 12px;font-size:0.62rem;">
+              <option>Last 12 Months</option><option>Last 6 Months</option><option>This Year</option>
+            </select>
+          </div>
+          <!-- SVG Bar Chart -->
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-top:8px;">
+            <defs><linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00e5ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#00e5ff" stop-opacity="0.2"/></linearGradient></defs>
+            <!-- Grid lines -->
+            <line x1="0" y1="30" x2="600" y2="30" stroke="rgba(0,229,255,0.06)" stroke-width="1"/>
+            <line x1="0" y1="75" x2="600" y2="75" stroke="rgba(0,229,255,0.06)" stroke-width="1"/>
+            <line x1="0" y1="120" x2="600" y2="120" stroke="rgba(0,229,255,0.06)" stroke-width="1"/>
+            <line x1="0" y1="155" x2="600" y2="155" stroke="rgba(0,229,255,0.06)" stroke-width="1"/>
+            <!-- Y labels -->
+            <text x="2" y="32" fill="rgba(0,229,255,0.3)" font-family="Space Mono" font-size="8">5L</text>
+            <text x="2" y="77" fill="rgba(0,229,255,0.3)" font-family="Space Mono" font-size="8">3L</text>
+            <text x="2" y="122" fill="rgba(0,229,255,0.3)" font-family="Space Mono" font-size="8">1L</text>
+            <!-- Bars -->
+            <rect x="40" y="110" width="28" height="45" fill="url(#barGrad)" rx="1"/><text x="54" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">APR</text>
+            <rect x="90" y="100" width="28" height="55" fill="url(#barGrad)" rx="1"/><text x="104" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">MAY</text>
+            <rect x="140" y="85" width="28" height="70" fill="url(#barGrad)" rx="1"/><text x="154" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">JUN</text>
+            <rect x="190" y="90" width="28" height="65" fill="url(#barGrad)" rx="1"/><text x="204" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">JUL</text>
+            <rect x="240" y="70" width="28" height="85" fill="url(#barGrad)" rx="1"/><text x="254" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">AUG</text>
+            <rect x="290" y="80" width="28" height="75" fill="url(#barGrad)" rx="1"/><text x="304" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">SEP</text>
+            <rect x="340" y="55" width="28" height="100" fill="url(#barGrad)" rx="1"/><text x="354" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">OCT</text>
+            <rect x="390" y="60" width="28" height="95" fill="url(#barGrad)" rx="1"/><text x="404" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">NOV</text>
+            <rect x="440" y="45" width="28" height="110" fill="url(#barGrad)" rx="1"/><text x="454" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">DEC</text>
+            <rect x="490" y="50" width="28" height="105" fill="url(#barGrad)" rx="1"/><text x="504" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">JAN</text>
+            <rect x="540" y="35" width="28" height="120" fill="url(#barGrad)" rx="1"/><text x="554" y="168" fill="rgba(0,229,255,0.4)" font-size="8" font-family="Space Mono" text-anchor="middle">FEB</text>
+            <!-- Latest month highlight -->
+            <rect x="540" y="35" width="28" height="120" fill="none" stroke="#00e5ff" stroke-width="1" rx="1"/>
+            <rect x="540" y="35" width="28" height="4" fill="#00e5ff"/>
+            <!-- Trend line -->
+            <polyline points="54,110 104,100 154,85 204,90 254,70 304,80 354,55 404,60 454,45 504,50 554,35" fill="none" stroke="rgba(57,255,20,0.5)" stroke-width="1.5" stroke-dasharray="4 2"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Revenue Breakdown Donut -->
+      <div class="col-lg-4">
+        <div class="admin-card" style="height:100%;">
+          <div class="section-hd"><div class="section-hd-title">Revenue Split</div></div>
+          <div style="display:flex;justify-content:center;margin:16px 0;">
+            <svg viewBox="0 0 120 120" width="120" height="120">
+              <circle cx="60" cy="60" r="44" fill="none" stroke="var(--bg2)" stroke-width="18"/>
+              <!-- Products 55% -->
+              <circle cx="60" cy="60" r="44" fill="none" stroke="#00e5ff" stroke-width="18" stroke-dasharray="152 124" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+              <!-- Courses 30% -->
+              <circle cx="60" cy="60" r="44" fill="none" stroke="#bc00ff" stroke-width="18" stroke-dasharray="83 193" stroke-dashoffset="-152" transform="rotate(-90 60 60)"/>
+              <!-- Services 15% -->
+              <circle cx="60" cy="60" r="44" fill="none" stroke="#39ff14" stroke-width="18" stroke-dasharray="41 235" stroke-dashoffset="-235" transform="rotate(-90 60 60)"/>
+              <text x="60" y="55" text-anchor="middle" fill="#00e5ff" font-family="Orbitron,monospace" font-size="13" font-weight="900">₹4.2L</text>
+              <text x="60" y="70" text-anchor="middle" fill="rgba(0,229,255,0.4)" font-family="Space Mono,monospace" font-size="7">TOTAL</text>
+            </svg>
+          </div>
+          <div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#00e5ff;"></div><div class="donut-label">Products</div><div class="donut-pct">55%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#bc00ff;"></div><div class="donut-label">Courses</div><div class="donut-pct">30%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#39ff14;"></div><div class="donut-label">Services</div><div class="donut-pct">15%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Recent Orders -->
+      <div class="col-lg-8">
+        <div class="admin-card">
+          <div class="section-hd">
+            <div><div class="section-hd-title">Recent Orders</div><div class="section-hd-sub">// Latest 8 orders</div></div>
+            <button class="btn-admin-ghost" onclick="showPage('orders',document.querySelector('[onclick*=orders]'))"><i class="bi bi-arrow-right"></i> View All</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th>Date</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-0934</span></td><td><div class="tbl-name">Arjun Tiwari</div><div class="tbl-sub">Lucknow</div></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;">2 items</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹12,999</span></td><td><span class="status-pill s-processing">Processing</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 17</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+                <tr><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-0921</span></td><td><div class="tbl-name">Riya Sharma</div><div class="tbl-sub">Delhi</div></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;">1 item</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹7,499</span></td><td><span class="status-pill s-shipped">Shipped</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 15</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+                <tr><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-0847</span></td><td><div class="tbl-name">Karan Mehta</div><div class="tbl-sub">Bangalore</div></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;">3 items</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹3,206</span></td><td><span class="status-pill s-delivered">Delivered</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 13</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+                <tr><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-0812</span></td><td><div class="tbl-name">Sneha Rao</div><div class="tbl-sub">Pune</div></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;">1 item</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹18,500</span></td><td><span class="status-pill s-delivered">Delivered</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 11</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+                <tr><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-0799</span></td><td><div class="tbl-name">Vikrant Mishra</div><div class="tbl-sub">Allahabad</div></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;">4 items</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹2,194</span></td><td><span class="status-pill s-cancelled">Cancelled</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 10</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Activity + Stock -->
+      <div class="col-lg-4 d-flex flex-column gap-3">
+        <!-- Activity Feed -->
+        <div class="admin-card" style="flex:1;">
+          <div class="section-hd"><div class="section-hd-title">Live Activity</div></div>
+          <div class="activity-item"><div class="activity-dot" style="background:var(--green);"></div><div class="activity-msg"><strong>New order</strong> #TC-0935 — ESP32 ×5<br>Rohan Verma · ₹2,495</div><div class="activity-time">2m ago</div></div>
+          <div class="activity-item"><div class="activity-dot" style="background:var(--accent);"></div><div class="activity-msg"><strong>Course enrolled</strong> — ROS 2 Complete<br>Ananya Singh</div><div class="activity-time">8m ago</div></div>
+          <div class="activity-item"><div class="activity-dot" style="background:var(--purple);"></div><div class="activity-msg"><strong>Service inquiry</strong> — PCB Design<br>Budget ₹20K–₹50K</div><div class="activity-time">15m ago</div></div>
+          <div class="activity-item"><div class="activity-dot" style="background:var(--red);"></div><div class="activity-msg"><strong>Low stock alert</strong> — Jetson Nano<br>Only 2 units left</div><div class="activity-time">32m ago</div></div>
+          <div class="activity-item"><div class="activity-dot" style="background:var(--green);"></div><div class="activity-msg"><strong>New review</strong> — Arduino Mega 5★<br>Arjun Tiwari</div><div class="activity-time">1h ago</div></div>
+        </div>
+        <!-- Quick Stats -->
+        <div class="admin-card">
+          <div class="section-hd"><div class="section-hd-title">Quick Stats</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Pending Dispatch</span><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--orange);">12</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Service Requests</span><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--accent);">5</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Low Stock Items</span><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--red);">3</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Avg Order Value</span><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--green);">₹8,924</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Conversion Rate</span><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--accent);">3.8%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ORDERS PAGE ══ -->
+  <div class="page-section" id="pg-orders">
+    <div class="section-hd mb-4">
+      <div><div class="section-hd-title">All Orders</div><div class="section-hd-sub">// Manage and track all orders</div></div>
+      <div class="d-flex gap-2 flex-wrap">
+        <input class="input-admin" placeholder="Search order ID..." style="width:200px;">
+        <select class="input-admin" style="width:auto;"><option>All Status</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select>
+        <button class="btn-admin"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+    <!-- Order status strip -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--orange);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">PROCESSING</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--orange);">12</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--accent);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">SHIPPED</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);">28</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--green);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">DELIVERED</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--green);">431</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--red);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">CANCELLED</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--red);">7</div></div></div>
+    </div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>Order ID</th><th>Customer</th><th>Products</th><th>Amount</th><th>Payment</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">1</td><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-2025-0934</span></td><td><div class="tbl-name">Arjun Tiwari</div><div class="tbl-sub">Lucknow · arjun@email.com</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">6-DOF Robotic Arm</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹12,999</span></td><td><span class="status-pill s-delivered">UPI</span></td><td><span class="status-pill s-processing">Processing</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 17, 2025</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin red"><i class="bi bi-x-lg"></i></button></div></td></tr>
+            <tr><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">2</td><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-2025-0921</span></td><td><div class="tbl-name">Riya Sharma</div><div class="tbl-sub">Delhi · riya@email.com</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Raspberry Pi 5 8GB</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹7,499</span></td><td><span class="status-pill s-delivered">Card</span></td><td><span class="status-pill s-shipped">Shipped</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 15, 2025</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button></div></td></tr>
+            <tr><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">3</td><td><span style="font-family:var(--font-mono);color:var(--accent);font-size:0.72rem;">#TC-2025-0847</span></td><td><div class="tbl-name">Karan Mehta</div><div class="tbl-sub">Bangalore · karan@tech.com</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Arduino Mega + ESP32 ×3</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹3,206</span></td><td><span class="status-pill s-delivered">UPI</span></td><td><span class="status-pill s-delivered">Delivered</span></td><td><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">Mar 13, 2025</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin"><i class="bi bi-arrow-repeat"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCTS PAGE ══ -->
+  <div class="page-section" id="pg-products">
+    <div class="section-hd mb-4">
+      <div><div class="section-hd-title">Products</div><div class="section-hd-sub">// 500+ SKUs · Manage catalog</div></div>
+      <div class="d-flex gap-2 flex-wrap">
+        <input class="input-admin" placeholder="Search products..." style="width:200px;">
+        <select class="input-admin" style="width:auto;"><option>All Categories</option><option>Microcontroller</option><option>Robotics</option><option>IoT</option><option>AI/Edge</option></select>
+        <button class="btn-admin" onclick="showToast('Add Product modal would open','success')"><i class="bi bi-plus"></i> Add Product</button>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Price</th><th>Stock</th><th>Sales</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:12px;"><div class="product-thumb"><img src="images/Jhoomer1.jpg" alt=""></div><div><div class="tbl-name">Arduino Mega 2560 Pro</div><div class="tbl-sub">Genuine · Arduino Official</div></div></div></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-ARD-MG2560</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);">Microcontroller</span></td>
+              <td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹1,899</span></td>
+              <td><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--green);">47 units</div><div class="stock-bar"><div class="stock-fill" style="width:47%;background:var(--green);"></div></div></td>
+              <td><span style="font-family:var(--font-head);font-size:0.82rem;color:var(--text2);">312</span></td>
+              <td><span class="status-pill s-active">Active</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin red"><i class="bi bi-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:12px;"><div class="product-thumb"><img src="images/Jhoomer2.jpg" alt=""></div><div><div class="tbl-name">Raspberry Pi 5 — 8GB</div><div class="tbl-sub">Official RPi Foundation</div></div></div></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-RPI-5-8G</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);">SBC</span></td>
+              <td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹7,499</span></td>
+              <td><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--orange);">8 units</div><div class="stock-bar"><div class="stock-fill" style="width:8%;background:var(--orange);"></div></div></td>
+              <td><span style="font-family:var(--font-head);font-size:0.82rem;color:var(--text2);">89</span></td>
+              <td><span class="status-pill s-active">Active</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin red"><i class="bi bi-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:12px;"><div class="product-thumb"><img src="images/Jhoomer5.jpg" alt=""></div><div><div class="tbl-name">NVIDIA Jetson Nano 4GB</div><div class="tbl-sub">NVIDIA Official</div></div></div></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-NVD-JN4G</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);">AI / Edge</span></td>
+              <td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹18,500</span></td>
+              <td><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--red);">2 units</div><div class="stock-bar"><div class="stock-fill" style="width:2%;background:var(--red);"></div></div></td>
+              <td><span style="font-family:var(--font-head);font-size:0.82rem;color:var(--text2);">43</span></td>
+              <td><span class="status-pill s-low">Low Stock</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-eye"></i></button><button class="btn-icon-admin" style="color:var(--orange);" onclick="showToast('Restock request sent!','success')"><i class="bi bi-box-arrow-in-down"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:12px;"><div class="product-thumb"><img src="images/Jhoomer4.jpg" alt=""></div><div><div class="tbl-name">ESP32 Dev Board WiFi/BT</div><div class="tbl-sub">Espressif</div></div></div></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-ESP-32DB</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);">IoT Module</span></td>
+              <td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹499</span></td>
+              <td><div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--green);">340 units</div><div class="stock-bar"><div class="stock-fill" style="width:85%;background:var(--green);"></div></div></td>
+              <td><span style="font-family:var(--font-head);font-size:0.82rem;color:var(--text2);">1,240</span></td>
+              <td><span class="status-pill s-active">Active</span></td>
+              <td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COURSES ADMIN PAGE ══ -->
+  <div class="page-section" id="pg-courses-admin">
+    <div class="section-hd mb-4">
+      <div><div class="section-hd-title">Course Management</div><div class="section-hd-sub">// 120 courses · 48,000+ students</div></div>
+      <div class="d-flex gap-2">
+        <button class="btn-admin" onclick="showToast('Add Course form opened','success')"><i class="bi bi-plus"></i> Add Course</button>
+        <button class="btn-admin-ghost"><i class="bi bi-download"></i> Export</button>
+      </div>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--accent);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">TOTAL COURSES</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);">120</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--green);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">TOTAL STUDENTS</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--green);">48K+</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--gold);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">COURSE REVENUE</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--gold);">₹1.3L</div></div></div>
+      <div class="col-6 col-md-3"><div class="admin-card-sm" style="border-left:3px solid var(--purple);"><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);">AVG RATING</div><div style="font-family:var(--font-head);font-size:1.6rem;color:var(--purple);">4.8★</div></div></div>
+    </div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Course</th><th>Instructor</th><th>Level</th><th>Price</th><th>Students</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div><div class="tbl-name">Arduino Fundamentals</div><div class="tbl-sub">Embedded Systems · 18 hrs · 82 lessons</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Aditya Sharma</span></td><td><span class="status-pill" style="background:rgba(57,255,20,0.1);color:var(--green);border:1px solid rgba(57,255,20,0.3);">Beginner</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹1,499</span></td><td><span style="font-family:var(--font-head);font-size:0.82rem;">8,200</span></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);">4.8 ★</span></td><td><span class="status-pill s-active">Published</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-graph-up"></i></button></div></td></tr>
+            <tr><td><div><div class="tbl-name">ROS 2 Complete Bootcamp</div><div class="tbl-sub">Robotics · 42 hrs · 186 lessons</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Rohit Gupta</span></td><td><span class="status-pill" style="background:rgba(0,229,255,0.1);color:var(--accent);border:1px solid rgba(0,229,255,0.3);">Intermediate</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹2,999</span></td><td><span style="font-family:var(--font-head);font-size:0.82rem;">4,200</span></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);">4.9 ★</span></td><td><span class="status-pill s-active">Published</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-graph-up"></i></button></div></td></tr>
+            <tr><td><div><div class="tbl-name">FPGA Design — VHDL Masterclass</div><div class="tbl-sub">FPGA · 50 hrs · 210 lessons</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Dr. Priya Mehta</span></td><td><span class="status-pill" style="background:rgba(255,107,0,0.1);color:var(--orange);border:1px solid rgba(255,107,0,0.3);">Advanced</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹4,999</span></td><td><span style="font-family:var(--font-head);font-size:0.82rem;">1,100</span></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);">4.9 ★</span></td><td><span class="status-pill s-active">Published</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin"><i class="bi bi-graph-up"></i></button></div></td></tr>
+            <tr><td><div><div class="tbl-name">Drone Flight Controller Build</div><div class="tbl-sub">Robotics · 28 hrs · 95 lessons</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">Rohit Gupta</span></td><td><span class="status-pill" style="background:rgba(0,229,255,0.1);color:var(--accent);border:1px solid rgba(0,229,255,0.3);">Intermediate</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹3,499</span></td><td><span style="font-family:var(--font-head);font-size:0.82rem;">0</span></td><td><span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3);">—</span></td><td><span class="status-pill s-draft">Draft</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin" onclick="showToast('Course published!','success')"><i class="bi bi-send"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ANALYTICS ══ -->
+  <div class="page-section" id="pg-analytics">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Analytics</div><div class="section-hd-sub">// Business intelligence overview</div></div><button class="btn-admin-ghost"><i class="bi bi-download"></i> Export Report</button></div>
+    <div class="row g-3 mb-4">
+      <div class="col-md-3"><div class="kpi-card"><i class="bi bi-bag kpi-icon" style="color:var(--accent);"></i><div class="kpi-label">Total Orders</div><div class="kpi-value">478</div><div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+23% YoY</div></div></div>
+      <div class="col-md-3"><div class="kpi-card"><i class="bi bi-currency-rupee kpi-icon" style="color:var(--green);"></i><div class="kpi-label">Avg Order Value</div><div class="kpi-value" style="color:var(--green);">₹8,924</div><div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+11%</div></div></div>
+      <div class="col-md-3"><div class="kpi-card"><i class="bi bi-arrow-repeat kpi-icon" style="color:var(--purple);"></i><div class="kpi-label">Repeat Customers</div><div class="kpi-value" style="color:var(--purple);">38%</div><div class="kpi-delta delta-up"><i class="bi bi-arrow-up-short"></i>+4% this month</div></div></div>
+      <div class="col-md-3"><div class="kpi-card"><i class="bi bi-cart-x kpi-icon" style="color:var(--red);"></i><div class="kpi-label">Cart Abandon Rate</div><div class="kpi-value" style="color:var(--red);">62%</div><div class="kpi-delta delta-down"><i class="bi bi-arrow-down-short"></i>-5% improvement</div></div></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="admin-card">
+          <div class="section-hd"><div class="section-hd-title">Top Selling Products</div></div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);width:16px;">01</span><div style="flex:1;"><div style="font-family:var(--font-head);font-size:0.75rem;color:var(--text);margin-bottom:4px;">ESP32 Dev Board WiFi/BT</div><div style="height:4px;background:var(--border);"><div style="width:90%;height:100%;background:var(--accent);"></div></div></div><span style="font-family:var(--font-head);font-size:0.75rem;color:var(--accent);white-space:nowrap;">1,240 sold</span></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);width:16px;">02</span><div style="flex:1;"><div style="font-family:var(--font-head);font-size:0.75rem;color:var(--text);margin-bottom:4px;">Arduino Mega 2560 Pro</div><div style="height:4px;background:var(--border);"><div style="width:65%;height:100%;background:var(--accent);"></div></div></div><span style="font-family:var(--font-head);font-size:0.75rem;color:var(--accent);white-space:nowrap;">812 sold</span></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);width:16px;">03</span><div style="flex:1;"><div style="font-family:var(--font-head);font-size:0.75rem;color:var(--text);margin-bottom:4px;">RPi Camera Module v3</div><div style="height:4px;background:var(--border);"><div style="width:50%;height:100%;background:var(--accent);"></div></div></div><span style="font-family:var(--font-head);font-size:0.75rem;color:var(--accent);white-space:nowrap;">624 sold</span></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);width:16px;">04</span><div style="flex:1;"><div style="font-family:var(--font-head);font-size:0.75rem;color:var(--text);margin-bottom:4px;">Raspberry Pi 5 — 8GB</div><div style="height:4px;background:var(--border);"><div style="width:38%;height:100%;background:var(--accent);"></div></div></div><span style="font-family:var(--font-head);font-size:0.75rem;color:var(--accent);white-space:nowrap;">478 sold</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="admin-card">
+          <div class="section-hd"><div class="section-hd-title">Traffic Sources</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+            <div class="donut-legend-item"><div class="donut-dot" style="background:var(--accent);"></div><div class="donut-label">Organic Search</div><div style="flex:1;height:4px;background:var(--border);margin:0 10px;"><div style="width:42%;height:100%;background:var(--accent);"></div></div><div class="donut-pct">42%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:var(--green);"></div><div class="donut-label">Direct</div><div style="flex:1;height:4px;background:var(--border);margin:0 10px;"><div style="width:28%;height:100%;background:var(--green);"></div></div><div class="donut-pct">28%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:var(--purple);"></div><div class="donut-label">Social Media</div><div style="flex:1;height:4px;background:var(--border);margin:0 10px;"><div style="width:18%;height:100%;background:var(--purple);"></div></div><div class="donut-pct">18%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:var(--gold);"></div><div class="donut-label">Referral</div><div style="flex:1;height:4px;background:var(--border);margin:0 10px;"><div style="width:8%;height:100%;background:var(--gold);"></div></div><div class="donut-pct">8%</div></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:var(--orange);"></div><div class="donut-label">Email</div><div style="flex:1;height:4px;background:var(--border);margin:0 10px;"><div style="width:4%;height:100%;background:var(--orange);"></div></div><div class="donut-pct">4%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CUSTOMERS ══ -->
+  <div class="page-section" id="pg-customers">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Customers</div><div class="section-hd-sub">// 12,000+ registered users</div></div><div class="d-flex gap-2"><input class="input-admin" placeholder="Search customers..." style="width:220px;"><button class="btn-admin-ghost"><i class="bi bi-download"></i> Export</button></div></div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Last Order</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;background:var(--accent);clip-path:polygon(8px 0%,100% 0%,calc(100%-8px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:0.6rem;color:var(--bg);font-weight:900;">A</div><div class="tbl-name">Arjun Tiwari</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text2);">arjun@email.com</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">+91 98765 43210</span></td><td style="font-family:var(--font-head);font-size:0.82rem;">7</td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹42,890</span></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Mar 17</td><td><span class="status-pill s-active">Active</span></td><td><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></td></tr>
+            <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;background:var(--purple);clip-path:polygon(8px 0%,100% 0%,calc(100%-8px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:0.6rem;color:#fff;font-weight:900;">R</div><div class="tbl-name">Riya Sharma</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text2);">riya@email.com</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">+91 91234 56789</span></td><td style="font-family:var(--font-head);font-size:0.82rem;">3</td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹18,499</span></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Mar 15</td><td><span class="status-pill s-active">Active</span></td><td><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></td></tr>
+            <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;background:var(--green);clip-path:polygon(8px 0%,100% 0%,calc(100%-8px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:0.6rem;color:#000;font-weight:900;">K</div><div class="tbl-name">Karan Mehta</div></div></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text2);">karan@tech.com</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">+91 98000 11234</span></td><td style="font-family:var(--font-head);font-size:0.82rem;">12</td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.82rem;">₹1,08,450</span></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Mar 13</td><td><span class="status-pill s-active">VIP</span></td><td><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ INVENTORY ══ -->
+  <div class="page-section" id="pg-inventory">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Inventory Management</div><div class="section-hd-sub">// 3 items low stock · Last updated Mar 17</div></div><button class="btn-admin" onclick="showToast('Stock update form opened','success')"><i class="bi bi-plus-circle"></i> Update Stock</button></div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Product</th><th>SKU</th><th>In Stock</th><th>Reserved</th><th>Available</th><th>Reorder Level</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tbl-name">Arduino Mega 2560 Pro</div></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-ARD-MG2560</td><td style="font-family:var(--font-head);color:var(--green);">47</td><td style="font-family:var(--font-mono);font-size:0.78rem;">5</td><td style="font-family:var(--font-head);color:var(--green);">42</td><td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3);">10 units</td><td><span class="status-pill s-active">OK</span></td><td><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button></td></tr>
+            <tr><td><div class="tbl-name">Raspberry Pi 5 — 8GB</div></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-RPI-5-8G</td><td style="font-family:var(--font-head);color:var(--orange);">8</td><td style="font-family:var(--font-mono);font-size:0.78rem;">3</td><td style="font-family:var(--font-head);color:var(--orange);">5</td><td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3);">10 units</td><td><span class="status-pill s-processing">Reorder</span></td><td><button class="btn-icon-admin" onclick="showToast('Restock email sent to supplier','success')"><i class="bi bi-box-arrow-in-down"></i></button></td></tr>
+            <tr><td><div class="tbl-name">NVIDIA Jetson Nano 4GB</div></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-NVD-JN4G</td><td style="font-family:var(--font-head);color:var(--red);">2</td><td style="font-family:var(--font-mono);font-size:0.78rem;">2</td><td style="font-family:var(--font-head);color:var(--red);">0</td><td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3);">5 units</td><td><span class="status-pill s-cancelled">Critical</span></td><td><button class="btn-icon-admin" onclick="showToast('URGENT restock triggered!','error')"><i class="bi bi-exclamation-triangle"></i></button></td></tr>
+            <tr><td><div class="tbl-name">ESP32 Dev Board WiFi/BT</div></td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">TC-ESP-32DB</td><td style="font-family:var(--font-head);color:var(--green);">340</td><td style="font-family:var(--font-mono);font-size:0.78rem;">12</td><td style="font-family:var(--font-head);color:var(--green);">328</td><td style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3);">50 units</td><td><span class="status-pill s-active">OK</span></td><td><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COUPONS ══ -->
+  <div class="page-section" id="pg-coupons">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Coupon Management</div><div class="section-hd-sub">// Discount codes &amp; campaigns</div></div><button class="btn-admin" onclick="showToast('Create Coupon form opened','success')"><i class="bi bi-plus"></i> Create Coupon</button></div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Code</th><th>Type</th><th>Discount</th><th>Used / Limit</th><th>Min Order</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.85rem;">TECH20</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;">Percentage</span></td><td><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--green);">20% OFF</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">482 / 1000</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">₹999</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">Dec 31, 2025</span></td><td><span class="status-pill s-active">Active</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button><button class="btn-icon-admin red" onclick="showToast('Coupon deactivated','error')"><i class="bi bi-x-circle"></i></button></div></td></tr>
+            <tr><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.85rem;">FIRST50</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;">Flat</span></td><td><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--green);">₹50 OFF</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">1,200 / ∞</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">₹499</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);">No Expiry</span></td><td><span class="status-pill s-active">Active</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-pencil"></i></button></div></td></tr>
+            <tr><td><span style="font-family:var(--font-head);color:var(--text3);font-size:0.85rem;">DIWALI30</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;">Percentage</span></td><td><span style="font-family:var(--font-head);font-size:0.85rem;color:var(--text3);">30% OFF</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">3,847 / 5000</span></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">₹1,499</span></td><td><span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--red);">Expired</span></td><td><span class="status-pill s-cancelled">Expired</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin" onclick="showToast('Coupon renewed','success')"><i class="bi bi-arrow-repeat"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SERVICES ADMIN ══ -->
+  <div class="page-section" id="pg-services-admin">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Service Requests</div><div class="section-hd-sub">// 5 pending inquiries</div></div><button class="btn-admin-ghost"><i class="bi bi-download"></i> Export</button></div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Client</th><th>Service Type</th><th>Budget</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tbl-name">Rahul Khanna</div><div class="tbl-sub">AgriSense Tech · Pune</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">PCB Design</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.78rem;">₹20K–₹50K</span></td><td><span style="font-size:0.8rem;color:var(--text2);">4-layer IoT sensor board...</span></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Mar 17</td><td><span class="status-pill s-processing">Pending</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-reply"></i></button><button class="btn-icon-admin"><i class="bi bi-check-lg"></i></button></div></td></tr>
+            <tr><td><div class="tbl-name">Ananya Sinha</div><div class="tbl-sub">LogiFlow · Bangalore</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">IoT Integration</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.78rem;">₹50K–₹1L</span></td><td><span style="font-size:0.8rem;color:var(--text2);">Warehouse MQTT + cloud dash...</span></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Mar 15</td><td><span class="status-pill s-shipped">In Progress</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+            <tr><td><div class="tbl-name">Vikrant Mishra</div><div class="tbl-sub">NIT Allahabad · Student</div></td><td><span style="font-family:var(--font-mono);font-size:0.68rem;">1-on-1 Mentoring</span></td><td><span style="font-family:var(--font-head);color:var(--accent);font-size:0.78rem;">₹999/session</span></td><td><span style="font-size:0.8rem;color:var(--text2);">STM32 RTOS debug session...</span></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Mar 14</td><td><span class="status-pill s-delivered">Completed</span></td><td><div style="display:flex;gap:4px;"><button class="btn-icon-admin"><i class="bi bi-eye"></i></button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ENROLLMENTS ══ -->
+  <div class="page-section" id="pg-enrollments">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Course Enrollments</div><div class="section-hd-sub">// 89 new this week</div></div><button class="btn-admin-ghost"><i class="bi bi-download"></i> Export</button></div>
+    <div class="admin-card">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Student</th><th>Course</th><th>Price Paid</th><th>Progress</th><th>Enrolled On</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tbl-name">Prashant Gupta</div><div class="tbl-sub">prashanth@email.com</div></td><td><span style="font-family:var(--font-head);font-size:0.72rem;">Arduino Fundamentals</span></td><td><span style="font-family:var(--font-head);color:var(--accent);">₹1,499</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:4px;background:var(--border);"><div style="width:65%;height:100%;background:var(--accent);"></div></div><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--accent);">65%</span></div></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Mar 10, 2025</td><td><span class="status-pill s-active">Active</span></td></tr>
+            <tr><td><div class="tbl-name">Divya Nair</div><div class="tbl-sub">divya@nair.com</div></td><td><span style="font-family:var(--font-head);font-size:0.72rem;">ROS 2 Complete</span></td><td><span style="font-family:var(--font-head);color:var(--accent);">₹2,999</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:4px;background:var(--border);"><div style="width:22%;height:100%;background:var(--accent);"></div></div><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--accent);">22%</span></div></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Mar 15, 2025</td><td><span class="status-pill s-active">Active</span></td></tr>
+            <tr><td><div class="tbl-name">Saurabh Jain</div><div class="tbl-sub">saurabh@corp.in</div></td><td><span style="font-family:var(--font-head);font-size:0.72rem;">FPGA Masterclass</span></td><td><span style="font-family:var(--font-head);color:var(--accent);">₹4,999</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:4px;background:var(--border);"><div style="width:100%;height:100%;background:var(--green);"></div></div><span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--green);">100%</span></div></td><td style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);">Jan 5, 2025</td><td><span class="status-pill s-delivered">Completed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div class="page-section" id="pg-settings">
+    <div class="section-hd mb-4"><div><div class="section-hd-title">Site Settings</div><div class="section-hd-sub">// Store configuration</div></div><button class="btn-admin" onclick="showToast('Settings saved!','success')"><i class="bi bi-check-lg"></i> Save All</button></div>
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="admin-card">
+          <div class="section-hd mb-3"><div class="section-hd-title">Store Info</div></div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">STORE NAME</div><input class="input-admin" value="TechCore — Robotics &amp; Electronics"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">SUPPORT EMAIL</div><input class="input-admin" value="support@techcore.in"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">PHONE</div><input class="input-admin" value="+91 98765 43210"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">ADDRESS</div><textarea class="input-admin" rows="2">Tech Park, Hazratganj, Lucknow — 226001</textarea></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="admin-card">
+          <div class="section-hd mb-3"><div class="section-hd-title">Shipping &amp; Tax</div></div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">FREE SHIPPING THRESHOLD</div><input class="input-admin" value="₹999"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">EXPRESS SHIPPING CHARGE</div><input class="input-admin" value="₹99"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">GST RATE</div><input class="input-admin" value="18%"></div>
+            <div><div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);margin-bottom:5px;">GST NUMBER</div><input class="input-admin" value="09AABCT1234A1Z5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Mobile Sidebar Toggle -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+
+<!-- Toast -->
+<div id="adminToast" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function showPage(id, el) {
+  document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-section'));
+  document.querySelectorAll('.nav-item-admin').forEach(n => n.classList.remove('active'));
+  document.getElementById('pg-' + id).classList.add('active-section');
+  if (el) el.classList.add('active');
+  const titles = {
+    dashboard:'// DASHBOARD OVERVIEW', orders:'// ORDER MANAGEMENT',
+    products:'// PRODUCT CATALOG', inventory:'// INVENTORY CONTROL',
+    customers:'// CUSTOMER DATABASE', 'courses-admin':'// COURSE MANAGEMENT',
+    enrollments:'// COURSE ENROLLMENTS', 'services-admin':'// SERVICE REQUESTS',
+    analytics:'// ANALYTICS & REPORTS', coupons:'// COUPON MANAGEMENT',
+    settings:'// SITE SETTINGS'
+  };
+  document.getElementById('topbarTitle').textContent = titles[id] || '// ADMIN';
+  if (window.innerWidth < 992) document.getElementById('sidebar').classList.remove('open');
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function showToast(msg, type) {
+  const c = document.getElementById('adminToast');
+  const t = document.createElement('div');
+  const col = type === 'success' ? '#39ff14' : '#ff3355';
+  t.style.cssText = `background:#060d12;border:1px solid ${col};border-left:3px solid ${col};padding:12px 18px;display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:0.72rem;color:#e0f7ff;max-width:300px;box-shadow:0 0 20px rgba(0,229,255,0.15);animation:slideIn 0.3s ease;`;
+  t.innerHTML = `<i class="bi ${type==='success'?'bi-check-circle-fill':'bi-x-circle-fill'}" style="color:${col};flex-shrink:0;"></i>${msg}`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='all 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('sidebar').classList.remove('open');
+});
+</script>
+<style>
+@keyframes slideIn { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
+</style>
+</body>
+</html>

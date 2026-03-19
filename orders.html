@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | TechCore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="./styles_robotics.css">
+</head>
+<body>
+<div class="page-transition"></div>
+<div class="toast-container-luxury" id="toast-container"></div>
+
+<nav class="navbar-luxury" id="mainNavbar">
+  <div class="container p-1">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></a>
+      <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="courses.html">Courses</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="nav-action-btn"><i class="bi bi-bag"></i><span class="nav-badge cart-count" style="display:none;">0</span></a>
+        <div class="theme-toggle theme-toggle-mobile"><button class="theme-btn" data-theme="dark">🌙</button><button class="theme-btn" data-theme="light">☀️</button><button class="theme-btn" data-theme="midnight">💠</button></div>
+        <button class="mobile-menu-toggle" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb-luxury" style="margin-top:68px;">
+  <div class="container"><nav><ol class="breadcrumb"><li class="breadcrumb-item"><a href="index.html">Home</a></li><li class="breadcrumb-item active">My Orders</li></ol></nav></div>
+</div>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-4">
+      <!-- SIDEBAR: Account Menu -->
+      <div class="col-lg-3">
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);padding:24px;position:sticky;top:90px;">
+          <!-- User Info -->
+          <div style="text-align:center;padding-bottom:20px;border-bottom:1px solid var(--border-color);margin-bottom:20px;">
+            <div style="width:64px;height:64px;background:var(--accent-primary);clip-path:polygon(10px 0%,100% 0%,calc(100%-10px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--text-inverse);font-weight:900;">A</div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--text-primary);">Arjun Tiwari</div>
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">arjun@email.com</div>
+          </div>
+          <nav>
+            <a href="orders.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--accent-glow);border:1px solid var(--accent-primary);color:var(--accent-primary);font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;margin-bottom:6px;"><i class="bi bi-bag-check"></i> My Orders</a>
+            <a href="courses.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text-secondary);font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;margin-bottom:6px;transition:var(--transition);" onmouseover="this.style.color='var(--accent-primary)';" onmouseout="this.style.color='var(--text-secondary)';"><i class="bi bi-mortarboard"></i> My Courses</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text-secondary);font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;margin-bottom:6px;transition:var(--transition);" onmouseover="this.style.color='var(--accent-primary)';" onmouseout="this.style.color='var(--text-secondary)';"><i class="bi bi-heart"></i> Wishlist</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text-secondary);font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;margin-bottom:6px;transition:var(--transition);" onmouseover="this.style.color='var(--accent-primary)';" onmouseout="this.style.color='var(--text-secondary)';"><i class="bi bi-person"></i> Profile</a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--text-secondary);font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;margin-bottom:6px;transition:var(--transition);" onmouseover="this.style.color='var(--accent-primary)';" onmouseout="this.style.color='var(--text-secondary)';"><i class="bi bi-geo-alt"></i> Addresses</a>
+            <div style="border-top:1px solid var(--border-color);margin:10px 0;"></div>
+            <a href="login.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:#ff6b00;font-family:'Orbitron',monospace;font-size:0.7rem;text-decoration:none;"><i class="bi bi-box-arrow-right"></i> Logout</a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- ORDERS LIST -->
+      <div class="col-lg-9">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+          <div>
+            <div class="section-subtitle">// Account</div>
+            <h2 class="section-title" style="margin:0;">My <span class="gold-text">Orders</span></h2>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <select class="input-luxury" style="width:auto;padding:8px 14px;font-size:0.75rem;"><option>All Orders</option><option>Delivered</option><option>Shipped</option><option>Processing</option><option>Cancelled</option></select>
+            <div style="position:relative;">
+              <input type="text" class="input-luxury" placeholder="Search orders..." style="padding-right:35px;font-size:0.75rem;">
+              <i class="bi bi-search" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.8rem;"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Cards -->
+        <!-- Order 1: Delivered -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);margin-bottom:16px;transition:var(--transition);" onmouseover="this.style.borderColor='var(--border-hover)';" onmouseout="this.style.borderColor='var(--border-color)';">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary);">
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">ORDER ID</div><div style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">#TC-2025-0847</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">DATE</div><div style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-secondary);">Mar 10, 2025</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">TOTAL</div><div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--accent-primary);">₹3,206</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="status-badge status-delivered"><i class="bi bi-check-circle-fill"></i> Delivered</span>
+              <a href="order-details.html" class="btn-luxury-outline" style="padding:6px 16px;font-size:0.62rem;">View Details</a>
+            </div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:200px;">
+                <div style="width:56px;height:56px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer1.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+                <div><div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--text-primary);">Arduino Mega 2560 Pro</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 1 · ₹1,899</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:200px;">
+                <div style="width:56px;height:56px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer4.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+                <div><div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--text-primary);">ESP32 Dev Board WiFi/BT</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 3 · ₹1,497</div></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
+              <button class="btn-luxury-outline" style="font-size:0.62rem;padding:6px 14px;" onclick="showToast('Reorder added to cart!','success')"><i class="bi bi-arrow-repeat"></i> Reorder</button>
+              <button class="btn-luxury-outline" style="font-size:0.62rem;padding:6px 14px;"><i class="bi bi-star"></i> Write Review</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 2: Shipped -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);margin-bottom:16px;transition:var(--transition);" onmouseover="this.style.borderColor='var(--border-hover)';" onmouseout="this.style.borderColor='var(--border-color)';">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary);">
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">ORDER ID</div><div style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">#TC-2025-0921</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">DATE</div><div style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-secondary);">Mar 15, 2025</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">TOTAL</div><div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--accent-primary);">₹7,499</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="status-badge status-shipped"><i class="bi bi-truck"></i> Shipped</span>
+              <a href="order-details.html" class="btn-luxury-outline" style="padding:6px 16px;font-size:0.62rem;">Track Order</a>
+            </div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="display:flex;gap:12px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:56px;height:56px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer2.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+                <div><div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--text-primary);">Raspberry Pi 5 — 8GB</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 1 · ₹7,499</div></div>
+              </div>
+            </div>
+            <!-- Tracking Bar -->
+            <div style="margin-top:16px;padding:14px;background:var(--bg-secondary);border:1px solid var(--border-color);">
+              <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-bottom:10px;">Tracking: <span style="color:var(--accent-primary);">DTDC1234567890</span></div>
+              <div style="display:flex;align-items:center;gap:0;">
+                <div style="text-align:center;flex:1;"><div style="width:12px;height:12px;background:var(--accent-primary);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);margin:0 auto;box-shadow:0 0 8px var(--accent-primary);"></div><div style="font-size:0.6rem;color:var(--accent-primary);font-family:'Space Mono',monospace;margin-top:5px;">Ordered</div></div>
+                <div style="flex:1;height:2px;background:var(--accent-primary);"></div>
+                <div style="text-align:center;flex:1;"><div style="width:12px;height:12px;background:var(--accent-primary);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);margin:0 auto;box-shadow:0 0 8px var(--accent-primary);"></div><div style="font-size:0.6rem;color:var(--accent-primary);font-family:'Space Mono',monospace;margin-top:5px;">Packed</div></div>
+                <div style="flex:1;height:2px;background:var(--accent-primary);"></div>
+                <div style="text-align:center;flex:1;"><div style="width:12px;height:12px;background:var(--accent-primary);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);margin:0 auto;box-shadow:0 0 8px var(--accent-primary);animation:timeline-pulse 2s ease-in-out infinite;"></div><div style="font-size:0.6rem;color:var(--accent-primary);font-family:'Space Mono',monospace;margin-top:5px;">In Transit</div></div>
+                <div style="flex:1;height:2px;background:var(--border-color);"></div>
+                <div style="text-align:center;flex:1;"><div style="width:12px;height:12px;background:var(--border-color);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);margin:0 auto;"></div><div style="font-size:0.6rem;color:var(--text-muted);font-family:'Space Mono',monospace;margin-top:5px;">Delivered</div></div>
+              </div>
+              <div style="margin-top:10px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Expected delivery: <strong style="color:var(--text-primary);">Mar 17, 2025</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order 3: Processing -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-color);margin-bottom:16px;transition:var(--transition);" onmouseover="this.style.borderColor='var(--border-hover)';" onmouseout="this.style.borderColor='var(--border-color)';">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary);">
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">ORDER ID</div><div style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">#TC-2025-0934</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">DATE</div><div style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-secondary);">Mar 17, 2025</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;">TOTAL</div><div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--accent-primary);">₹12,999</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="status-badge status-confirmed"><i class="bi bi-gear-fill" style="animation:spin 2s linear infinite;"></i> Processing</span>
+              <a href="order-details.html" class="btn-luxury-outline" style="padding:6px 16px;font-size:0.62rem;">View Details</a>
+            </div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="display:flex;gap:12px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:56px;height:56px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer3.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+                <div><div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--text-primary);">6-DOF Robotic Arm Kit</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 1 · ₹12,999</div></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+              <button class="btn-luxury-outline" style="font-size:0.62rem;padding:6px 14px;color:#ff6b00;border-color:#ff6b00;" onclick="showToast('Order cancellation requested.','error')"><i class="bi bi-x-circle"></i> Cancel Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty state hint -->
+        <div style="text-align:center;padding:20px;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-muted);">
+          Showing 3 of 3 orders · <a href="products.html" style="color:var(--accent-primary);">Continue Shopping →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-luxury">
+  <div class="footer-bottom"><div class="container"><p>© 2025 TechCore. All Rights Reserved.</p></div></div>
+</footer>
+<style>@keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

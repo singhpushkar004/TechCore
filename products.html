@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | TechCore — Components & Kits</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles_robotics.css">
+</head>
+<body>
+<div class="page-transition"></div>
+<div class="toast-container-luxury" id="toast-container"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav-overlay" id="mobile-overlay"></div>
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-header">
+    <div class="nav-brand"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></div>
+    <button class="btn-ghost" id="mobile-close"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html" class="active">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="orders.html">My Orders</a></li>
+  </ul>
+  <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-color);">
+    <div class="theme-toggle" style="justify-content:center;">
+      <button class="theme-btn" data-theme="dark">🌙</button>
+      <button class="theme-btn" data-theme="light">☀️</button>
+      <button class="theme-btn" data-theme="midnight">💠</button>
+    </div>
+  </div>
+</nav>
+
+<!-- NAVBAR -->
+<nav class="navbar-luxury" id="mainNavbar">
+  <div class="container p-1"><div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div>
+      <div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-action-btn"><i class="bi bi-bag"></i><span class="nav-badge cart-count" style="display:none;">0</span></a>
+      <div class="user-dropdown" style="position:relative;">
+        <button class="nav-action-btn"><i class="bi bi-person"></i></button>
+        <div class="user-dropdown-menu">
+          <a href="login.html" class="dropdown-item-custom"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+          <a href="register.html" class="dropdown-item-custom"><i class="bi bi-person-plus"></i> Register</a>
+          <div class="dropdown-divider-custom"></div>
+          <a href="orders.html" class="dropdown-item-custom"><i class="bi bi-bag-check"></i> My Orders</a>
+        </div>
+      </div>
+      <div class="theme-toggle theme-toggle-mobile">
+        <button class="theme-btn" data-theme="dark">🌙</button>
+        <button class="theme-btn" data-theme="light">☀️</button>
+        <button class="theme-btn" data-theme="midnight">💠</button>
+      </div>
+      <button class="mobile-menu-toggle" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </div>
+  </div></div>
+</nav>
+
+<!-- PAGE HEADER -->
+<section style="margin-top:68px;padding:50px 0 40px;background:var(--gradient-hero);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,var(--accent-glow) 0%,transparent 60%);pointer-events:none;"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,229,255,0.015) 3px,rgba(0,229,255,0.015) 4px);pointer-events:none;"></div>
+  <div class="container position-relative">
+    <div class="section-subtitle reveal">// ALL PRODUCTS</div>
+    <h1 class="section-title reveal" style="margin-bottom:8px;">Tech <span class="gold-text">Store</span></h1>
+    <p style="color:var(--text-secondary);font-family:'Space Mono',monospace;font-size:0.8rem;" class="reveal">500+ genuine components · Fast dispatch · Expert support</p>
+  </div>
+</section>
+
+<!-- BREADCRUMB -->
+<div style="background:var(--bg-secondary);border-bottom:1px solid var(--border-color);padding:10px 0;">
+  <div class="container"><nav><ol class="breadcrumb mb-0" style="font-size:0.78rem;font-family:'Space Mono',monospace;">
+    <li class="breadcrumb-item"><a href="index.html" style="color:var(--text-muted);">Home</a></li>
+    <li class="breadcrumb-item active" style="color:var(--accent-primary);">Shop</li>
+  </ol></nav></div>
+</div>
+
+<!-- MAIN CONTENT: SIDEBAR + GRID -->
+<div class="container" style="padding:40px 12px 80px;">
+  <div class="row g-4">
+
+    <!-- ===================== SIDEBAR FILTERS ===================== -->
+    <div class="col-lg-3">
+      <div class="filter-slider">
+        <div class="filter-slider-inner">
+          <div class="filter-sidebar">
+
+            <!-- Search -->
+            <div class="filter-section">
+              <div style="position:relative;">
+                <input type="text" class="input-luxury" placeholder="Search products..." style="padding-right:40px;" id="filterSearch">
+                <i class="bi bi-search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem;pointer-events:none;"></i>
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="filter-section">
+              <div class="filter-heading">Category <i class="bi bi-chevron-up" style="font-size:0.7rem;margin-left:auto;"></i></div>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Microcontrollers<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">124</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Robotics Kits<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">89</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Sensors<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">201</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>IoT Modules<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">156</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Displays<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">78</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Tools &amp; Lab<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">93</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>AI / Edge<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">42</span></label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>3D Printing<span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted);font-family:'Space Mono',monospace;">37</span></label>
+            </div>
+
+            <!-- Brand -->
+            <div class="filter-section">
+              <div class="filter-heading">Brand <i class="bi bi-chevron-up" style="font-size:0.7rem;margin-left:auto;"></i></div>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Arduino</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Raspberry Pi</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Espressif (ESP)</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>NVIDIA</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>STMicroelectronics</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>Adafruit</label>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-section">
+              <div class="filter-heading">Price Range</div>
+              <input type="range" class="price-slider" min="0" max="25000" value="15000" id="priceRange" style="width:100%;margin-bottom:8px;" oninput="document.getElementById('priceVal').textContent='₹'+parseInt(this.value).toLocaleString('en-IN')">
+              <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--text-muted);">
+                <span>₹0</span><span style="color:var(--accent-primary);" id="priceVal">₹15,000</span><span>₹25,000+</span>
+              </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="filter-section">
+              <div class="filter-heading">Availability</div>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>In Stock Only</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>On Sale</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div>New Arrivals</label>
+            </div>
+
+            <!-- Rating -->
+            <div class="filter-section">
+              <div class="filter-heading">Rating</div>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div><span style="color:var(--star-color,#c9a84c);">★★★★★</span>&nbsp;&amp; above</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div><span style="color:var(--star-color,#c9a84c);">★★★★</span>&nbsp;&amp; above</label>
+              <label class="filter-option"><input type="checkbox" style="display:none;" class="filter-cb"><div class="filter-checkbox"></div><span style="color:var(--star-color,#c9a84c);">★★★</span>&nbsp;&amp; above</label>
+            </div>
+
+            <button class="btn-luxury w-100 justify-content-center" style="font-size:0.68rem;">Apply Filters</button>
+            <button class="btn-luxury-outline w-100 justify-content-center mt-2" style="font-size:0.68rem;" onclick="document.querySelectorAll('.filter-cb').forEach(cb=>cb.checked=false)">Clear All</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== PRODUCTS GRID ===================== -->
+    <div class="col-lg-9">
+
+      <!-- Toolbar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-muted);">Showing <strong style="color:var(--accent-primary);">48</strong> products</span>
+          <!-- Active Filter Tags -->
+          <span style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-glow);border:1px solid var(--accent-primary);color:var(--accent-primary);font-family:'Space Mono',monospace;font-size:0.65rem;padding:3px 10px;cursor:pointer;">In Stock <i class="bi bi-x"></i></span>
+          <span style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-glow);border:1px solid var(--accent-primary);color:var(--accent-primary);font-family:'Space Mono',monospace;font-size:0.65rem;padding:3px 10px;cursor:pointer;">Under ₹15,000 <i class="bi bi-x"></i></span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select class="input-luxury" style="width:auto;padding:8px 14px;font-size:0.75rem;">
+            <option>Sort: Featured</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Newest First</option>
+            <option>Best Rated</option>
+          </select>
+          <div style="display:flex;border:1px solid var(--border-color);">
+            <button class="btn-icon active" id="gridBtn" style="border:none;border-right:1px solid var(--border-color);padding:8px 11px;background:var(--accent-glow);color:var(--accent-primary);cursor:pointer;"><i class="bi bi-grid-3x3-gap-fill"></i></button>
+            <button class="btn-icon" id="listBtn" style="border:none;padding:8px 11px;background:transparent;color:var(--text-muted);cursor:pointer;"><i class="bi bi-list-ul"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Cards Grid -->
+      <div class="row g-4" id="productsGrid">
+
+        <!-- 1 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-1">
+          <div class="product-card" data-product="P001" data-name="Arduino Mega 2560 Pro" data-price="1899">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer1.jpg" alt="Arduino Mega" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-sale">-20%</span><span class="badge-luxury badge-hot">Hot</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P001"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Microcontroller</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">Arduino Mega 2560 Pro</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><span class="review-count">(128)</span></div>
+              <div class="product-price"><span class="price-current">₹1,899</span><span class="price-original">₹2,374</span><span class="price-discount">-20%</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-2">
+          <div class="product-card" data-product="P002" data-name="Raspberry Pi 5 — 8GB" data-price="7499">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer2.jpg" alt="Raspberry Pi 5" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-new">New</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P002"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Single Board Computer</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">Raspberry Pi 5 — 8GB</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div><span class="review-count">(64)</span></div>
+              <div class="product-price"><span class="price-current">₹7,499</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-3">
+          <div class="product-card" data-product="P003" data-name="6-DOF Robotic Arm Kit" data-price="12999">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer3.jpg" alt="Robotic Arm" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-sale">-15%</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P003"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Robotics Kit</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">6-DOF Robotic Arm Kit</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></div><span class="review-count">(43)</span></div>
+              <div class="product-price"><span class="price-current">₹12,999</span><span class="price-original">₹15,293</span><span class="price-discount">-15%</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-4">
+          <div class="product-card" data-product="P004" data-name="ESP32 Dev Board WiFi/BT" data-price="499">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer4.jpg" alt="ESP32" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-new">New</span><span class="badge-luxury badge-hot">Hot</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P004"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">IoT Module</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">ESP32 Dev Board WiFi/BT</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><span class="review-count">(312)</span></div>
+              <div class="product-price"><span class="price-current">₹499</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-1">
+          <div class="product-card" data-product="P005" data-name="NVIDIA Jetson Nano 4GB" data-price="18500">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer5.jpg" alt="Jetson Nano" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-sale">-10%</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P005"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">AI / Edge Computing</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">NVIDIA Jetson Nano 4GB</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div><span class="review-count">(87)</span></div>
+              <div class="product-price"><span class="price-current">₹18,500</span><span class="price-original">₹20,555</span><span class="price-discount">-10%</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-2">
+          <div class="product-card" data-product="P006" data-name="Digital Oscilloscope 100MHz" data-price="11299">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/Jhoomer7.jpg" alt="Oscilloscope" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-sale">-10%</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="P006"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Test Equipment</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">Digital Oscilloscope 100MHz</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><span class="review-count">(56)</span></div>
+              <div class="product-price"><span class="price-current">₹11,299</span><span class="price-original">₹12,554</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-3">
+          <div class="product-card" data-product="N001" data-name="STM32 Nucleo Dev Board" data-price="1299">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/WallLamp1.jpg" alt="STM32" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-new">New</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="N001"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Microcontroller</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">STM32 Nucleo Dev Board</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div><span class="review-count">(29)</span></div>
+              <div class="product-price"><span class="price-current">₹1,299</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="col-sm-6 col-xl-4 reveal stagger-4">
+          <div class="product-card" data-product="N003" data-name="Raspberry Pi Camera Module v3" data-price="2499">
+            <div class="product-card-img">
+              <div class="product-img-placeholder"><img src="images/WallLamp3.jpg" alt="RPi Camera" style="filter:hue-rotate(180deg) saturate(1.3);"></div>
+              <div class="product-badges"><span class="badge-luxury badge-new">New</span><span class="badge-luxury badge-hot">Hot</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" data-wishlist-btn="N003"><i class="bi bi-heart"></i></button>
+                <button class="product-action-btn"><i class="bi bi-eye"></i></button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Vision Module</div>
+              <div class="product-name"><a href="product-details.html" style="text-decoration:none;color:inherit;">Raspberry Pi Camera Module v3</a></div>
+              <div class="product-stars"><div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><span class="review-count">(89)</span></div>
+              <div class="product-price"><span class="price-current">₹2,499</span></div>
+              <button class="btn-add-cart" data-add-cart><i class="bi bi-bag-plus"></i> Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /row -->
+
+      <!-- PAGINATION -->
+      <div style="display:flex;justify-content:center;align-items:center;gap:6px;margin-top:48px;" class="reveal">
+        <button class="page-btn" onclick="">&lt;</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span style="color:var(--text-muted);font-family:'Space Mono',monospace;font-size:0.8rem;">···</span>
+        <button class="page-btn">8</button>
+        <button class="page-btn">&gt;</button>
+      </div>
+
+    </div><!-- /col-lg-9 -->
+  </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer class="footer-luxury">
+  <div class="container"><div class="row g-4 pb-4">
+    <div class="col-12 col-md-4 footer-brand">
+      <div class="nav-brand mb-3"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div></div>
+      <p>Powering the next generation of engineers across India.</p>
+      <div class="social-links"><a href="#" class="social-link"><i class="bi bi-instagram"></i></a><a href="#" class="social-link"><i class="bi bi-youtube"></i></a><a href="#" class="social-link"><i class="bi bi-github"></i></a><a href="#" class="social-link"><i class="bi bi-linkedin"></i></a></div>
+    </div>
+    <div class="col-sm-6 col-md-2">
+      <div class="footer-heading">Quick Links</div>
+      <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
+    </div>
+    <div class="col-sm-6 col-md-2">
+      <div class="footer-heading">Support</div>
+      <ul class="footer-links"><li><a href="#">FAQ</a></li><li><a href="#">Shipping Policy</a></li><li><a href="#">Returns</a></li><li><a href="#">Privacy Policy</a></li></ul>
+    </div>
+    <div class="col-md-4">
+      <div class="footer-heading">Contact</div>
+      <div class="footer-contact-item"><div class="footer-contact-icon"><i class="bi bi-geo-alt"></i></div><div class="footer-contact-text">Tech Park, Hazratganj, Lucknow — 226001</div></div>
+      <div class="footer-contact-item"><div class="footer-contact-icon"><i class="bi bi-telephone"></i></div><div class="footer-contact-text">+91 98765 43210</div></div>
+      <div class="footer-contact-item"><div class="footer-contact-icon"><i class="bi bi-envelope"></i></div><div class="footer-contact-text">hello@techcore.in</div></div>
+    </div>
+  </div></div>
+  <div class="footer-bottom"><div class="container"><p>© 2025 TechCore. All Rights Reserved. Built with <i class="bi bi-heart-fill" style="color:var(--accent-primary);"></i> in India</p></div></div>
+</footer>
+
+<style>
+/* Pagination buttons */
+.page-btn {
+  width:36px;height:36px;background:transparent;border:1px solid var(--border-color);
+  color:var(--text-muted);cursor:pointer;font-family:'Space Mono',monospace;font-size:0.78rem;
+  transition:var(--transition);
+}
+.page-btn:hover,.page-btn.active {
+  border-color:var(--accent-primary);color:var(--accent-primary);background:var(--accent-glow);
+}
+.page-btn.active { font-weight:700; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+// Filter checkbox visual toggle
+document.querySelectorAll('.filter-option').forEach(label => {
+  label.addEventListener('click', function() {
+    const cb = this.querySelector('input[type=checkbox]');
+    const box = this.querySelector('.filter-checkbox');
+    cb.checked = !cb.checked;
+    if (cb.checked) {
+      box.style.background = 'var(--accent-primary)';
+      box.innerHTML = '<i class="bi bi-check" style="font-size:0.6rem;color:var(--text-inverse);"></i>';
+    } else {
+      box.style.background = '';
+      box.innerHTML = '';
+    }
+  });
+});
+// Grid / List toggle
+document.getElementById('gridBtn').addEventListener('click', function() {
+  this.style.background='var(--accent-glow)'; this.style.color='var(--accent-primary)';
+  document.getElementById('listBtn').style.background=''; document.getElementById('listBtn').style.color='var(--text-muted)';
+  document.querySelectorAll('#productsGrid > div').forEach(c => { c.className = c.className.replace('col-12',''); if(!c.className.includes('col-sm-6')) c.className += ' col-sm-6'; });
+});
+document.getElementById('listBtn').addEventListener('click', function() {
+  this.style.background='var(--accent-glow)'; this.style.color='var(--accent-primary)';
+  document.getElementById('gridBtn').style.background=''; document.getElementById('gridBtn').style.color='var(--text-muted)';
+  document.querySelectorAll('#productsGrid > div').forEach(c => { c.className = 'col-12 reveal'; });
+});
+</script>
+</body>
+</html>

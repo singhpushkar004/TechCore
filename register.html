@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | TechCore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles_robotics.css">
+</head>
+<body>
+<div class="page-transition"></div>
+<div class="toast-container-luxury" id="toast-container"></div>
+
+<div class="auth-page" style="padding:30px 20px;">
+  <div class="auth-bg-glow" style="top:-10%;right:-10%;"></div>
+  <div class="auth-bg-glow" style="bottom:-10%;left:-10%;animation-delay:3s;"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+
+  <div class="auth-card" style="max-width:500px;">
+    <div class="auth-logo">
+      <a href="index.html" class="nav-brand" style="justify-content:center;margin-bottom:6px;">
+        <div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div>
+        <div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Robotics &amp; Electronics</div></div>
+      </a>
+    </div>
+
+    <div class="auth-title">Create Account</div>
+    <div class="auth-subtitle">// JOIN 50,000+ ENGINEERS</div>
+
+    <a href="#" class="social-login-btn"><i class="bi bi-google" style="color:#ea4335;font-size:1rem;"></i> Sign up with Google</a>
+    <a href="#" class="social-login-btn"><i class="bi bi-github" style="font-size:1rem;"></i> Sign up with GitHub</a>
+
+    <div class="auth-divider"><span>or register with email</span></div>
+
+    <div class="row g-3">
+      <div class="col-sm-6">
+        <label class="label-luxury">First Name</label>
+        <input type="text" class="input-luxury" placeholder="Arjun">
+      </div>
+      <div class="col-sm-6">
+        <label class="label-luxury">Last Name</label>
+        <input type="text" class="input-luxury" placeholder="Tiwari">
+      </div>
+      <div class="col-12">
+        <label class="label-luxury">Email Address</label>
+        <input type="email" class="input-luxury" placeholder="arjun@email.com">
+      </div>
+      <div class="col-sm-6">
+        <label class="label-luxury">Phone Number</label>
+        <input type="tel" class="input-luxury" placeholder="+91 98765 43210">
+      </div>
+      <div class="col-sm-6">
+        <label class="label-luxury">I am a...</label>
+        <select class="input-luxury">
+          <option value="">Select Role</option>
+          <option>Student</option>
+          <option>Professional Engineer</option>
+          <option>Hobbyist / Maker</option>
+          <option>Institution / College</option>
+          <option>Business / Startup</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="label-luxury">Password</label>
+        <div class="input-group-luxury">
+          <input type="password" class="input-luxury" id="regPass" placeholder="Min. 8 characters">
+          <button class="input-eye-toggle" onclick="togglePass('regPass',this)"><i class="bi bi-eye"></i></button>
+        </div>
+        <!-- Strength bar -->
+        <div style="margin-top:8px;height:3px;background:var(--border-color);border-radius:2px;overflow:hidden;">
+          <div id="strengthBar" style="height:100%;width:0%;background:var(--accent-primary);transition:all 0.3s;"></div>
+        </div>
+        <div id="strengthText" style="font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--text-muted);margin-top:4px;"></div>
+      </div>
+      <div class="col-12">
+        <label class="label-luxury">Confirm Password</label>
+        <div class="input-group-luxury">
+          <input type="password" class="input-luxury" id="regPassConf" placeholder="Re-enter password">
+          <button class="input-eye-toggle" onclick="togglePass('regPassConf',this)"><i class="bi bi-eye"></i></button>
+        </div>
+      </div>
+      <div class="col-12">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--text-secondary);">
+          <input type="checkbox" style="accent-color:var(--accent-primary);margin-top:3px;">
+          <span>I agree to the <a href="#" style="color:var(--accent-primary);">Terms of Service</a> and <a href="#" style="color:var(--accent-primary);">Privacy Policy</a></span>
+        </label>
+      </div>
+      <div class="col-12">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--text-secondary);">
+          <input type="checkbox" style="accent-color:var(--accent-primary);">
+          <span>Subscribe to newsletter for 15% off first order</span>
+        </label>
+      </div>
+      <div class="col-12">
+        <button class="btn-luxury w-100" style="justify-content:center;margin-top:4px;" onclick="window.location='index.html'">
+          <i class="bi bi-person-check-fill"></i> Create Account
+        </button>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);font-family:'Rajdhani',sans-serif;margin:18px 0 0;">
+      Already have an account? <a href="login.html" style="color:var(--accent-primary);font-weight:600;">Login here</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function togglePass(id, btn) {
+  const f = document.getElementById(id);
+  const show = f.type === 'password';
+  f.type = show ? 'text' : 'password';
+  btn.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+}
+const passInput = document.getElementById('regPass');
+if(passInput) passInput.addEventListener('input', function() {
+  const v = this.value;
+  let score = 0;
+  if(v.length >= 8) score++;
+  if(/[A-Z]/.test(v)) score++;
+  if(/[0-9]/.test(v)) score++;
+  if(/[^A-Za-z0-9]/.test(v)) score++;
+  const bar = document.getElementById('strengthBar');
+  const txt = document.getElementById('strengthText');
+  const levels = ['','25% — Weak','50% — Fair','75% — Good','100% — Strong'];
+  const colors = ['','#ff6b00','#c9a84c','#00e5ff','#39ff14'];
+  bar.style.width = (score*25)+'%';
+  bar.style.background = colors[score];
+  txt.textContent = levels[score];
+  txt.style.color = colors[score];
+});
+</script>
+<div class="theme-toggle" style="position:fixed;bottom:20px;right:20px;z-index:99;"><button class="theme-btn" data-theme="dark">🌙</button><button class="theme-btn" data-theme="light">☀️</button><button class="theme-btn" data-theme="midnight">💠</button></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

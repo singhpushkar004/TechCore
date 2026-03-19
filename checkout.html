@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | TechCore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="./styles_robotics.css">
+</head>
+<body>
+<div class="page-transition"></div>
+<div class="toast-container-luxury" id="toast-container"></div>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:999;background:var(--navbar-bg);border-bottom:1px solid var(--border-color);padding:14px 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <a href="index.html" class="nav-brand"><div class="nav-brand-logo"><i class="bi bi-cpu-fill"></i></div><div><div class="nav-brand-text">TechCore</div><div class="nav-brand-tagline">Secure Checkout</div></div></a>
+      <div style="display:flex;align-items:center;gap:8px;"><i class="bi bi-shield-lock-fill" style="color:var(--accent-primary);"></i><span style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-muted);">SSL Secured</span></div>
+    </div>
+  </div>
+</nav>
+
+<div style="margin-top:68px;background:var(--bg-secondary);border-bottom:1px solid var(--border-color);padding:20px 0;">
+  <div class="container">
+    <!-- Checkout Steps -->
+    <div class="checkout-steps">
+      <div class="checkout-step active">
+        <div style="text-align:center;">
+          <div class="step-circle">1</div>
+          <div class="step-label">Cart</div>
+        </div>
+      </div>
+      <div class="step-line done"></div>
+      <div class="checkout-step active">
+        <div style="text-align:center;">
+          <div class="step-circle">2</div>
+          <div class="step-label">Details</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="checkout-step">
+        <div style="text-align:center;">
+          <div class="step-circle">3</div>
+          <div class="step-label">Payment</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="checkout-step">
+        <div style="text-align:center;">
+          <div class="step-circle">4</div>
+          <div class="step-label">Confirm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding:40px 12px 60px;">
+  <div class="row g-4">
+    <!-- LEFT: FORMS -->
+    <div class="col-lg-7">
+      <!-- Contact Info -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-color);padding:28px;margin-bottom:20px;">
+        <h5 style="font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="display:inline-flex;width:24px;height:24px;background:var(--accent-primary);color:var(--text-inverse);align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;">1</span> Contact Information</h5>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="form-group-luxury"><label class="label-luxury">Full Name</label><input type="text" class="input-luxury" placeholder="John Doe" value="Arjun Tiwari"></div></div>
+          <div class="col-md-6"><div class="form-group-luxury"><label class="label-luxury">Email</label><input type="email" class="input-luxury" placeholder="you@email.com" value="arjun@email.com"></div></div>
+          <div class="col-12"><div class="form-group-luxury"><label class="label-luxury">Phone Number</label><input type="tel" class="input-luxury" placeholder="+91 XXXXX XXXXX" value="+91 98765 43210"></div></div>
+        </div>
+      </div>
+
+      <!-- Shipping Address -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-color);padding:28px;margin-bottom:20px;">
+        <h5 style="font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="display:inline-flex;width:24px;height:24px;background:var(--accent-primary);color:var(--text-inverse);align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;">2</span> Shipping Address</h5>
+        <div class="row g-3">
+          <div class="col-12"><div class="form-group-luxury"><label class="label-luxury">Address Line 1</label><input type="text" class="input-luxury" placeholder="House/Flat No, Street Name"></div></div>
+          <div class="col-12"><div class="form-group-luxury"><label class="label-luxury">Address Line 2 (Optional)</label><input type="text" class="input-luxury" placeholder="Landmark, Area"></div></div>
+          <div class="col-md-4"><div class="form-group-luxury"><label class="label-luxury">City</label><input type="text" class="input-luxury" placeholder="Lucknow"></div></div>
+          <div class="col-md-4"><div class="form-group-luxury"><label class="label-luxury">State</label><select class="input-luxury"><option>Uttar Pradesh</option><option>Maharashtra</option><option>Karnataka</option><option>Delhi</option><option>Tamil Nadu</option></select></div></div>
+          <div class="col-md-4"><div class="form-group-luxury"><label class="label-luxury">PIN Code</label><input type="text" class="input-luxury" placeholder="226001"></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
+          <input type="checkbox" id="saveAddr" style="accent-color:var(--accent-primary);">
+          <label for="saveAddr" style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-muted);cursor:pointer;">Save this address for future orders</label>
+        </div>
+      </div>
+
+      <!-- Delivery Options -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-color);padding:28px;margin-bottom:20px;">
+        <h5 style="font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="display:inline-flex;width:24px;height:24px;background:var(--accent-primary);color:var(--text-inverse);align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;">3</span> Delivery Option</h5>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <label style="display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--accent-primary);cursor:pointer;background:var(--accent-glow);">
+            <input type="radio" name="delivery" checked style="accent-color:var(--accent-primary);">
+            <div style="flex:1;"><div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--text-primary);">Standard Delivery</div><div style="font-size:0.8rem;color:var(--text-muted);">3–5 business days</div></div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--accent-primary);">FREE</div>
+          </label>
+          <label style="display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--border-color);cursor:pointer;">
+            <input type="radio" name="delivery" style="accent-color:var(--accent-primary);">
+            <div style="flex:1;"><div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--text-primary);">Express Delivery</div><div style="font-size:0.8rem;color:var(--text-muted);">1–2 business days</div></div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--text-primary);">₹99</div>
+          </label>
+          <label style="display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--border-color);cursor:pointer;">
+            <input type="radio" name="delivery" style="accent-color:var(--accent-primary);">
+            <div style="flex:1;"><div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:var(--text-primary);">Same Day Delivery</div><div style="font-size:0.8rem;color:var(--text-muted);">Order before 12 PM · Lucknow only</div></div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.9rem;color:var(--text-primary);">₹249</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-color);padding:28px;">
+        <h5 style="font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="display:inline-flex;width:24px;height:24px;background:var(--accent-primary);color:var(--text-inverse);align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;">4</span> Payment Method</h5>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <label style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--accent-primary);cursor:pointer;background:var(--accent-glow);">
+            <input type="radio" name="payment" checked style="accent-color:var(--accent-primary);">
+            <i class="bi bi-phone-fill" style="font-size:1.2rem;color:var(--accent-primary);"></i>
+            <span style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">UPI / GPay / PhonePe</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border-color);cursor:pointer;">
+            <input type="radio" name="payment" style="accent-color:var(--accent-primary);">
+            <i class="bi bi-credit-card" style="font-size:1.2rem;color:var(--text-secondary);"></i>
+            <span style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">Credit / Debit Card</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border-color);cursor:pointer;">
+            <input type="radio" name="payment" style="accent-color:var(--accent-primary);">
+            <i class="bi bi-building-fill" style="font-size:1.2rem;color:var(--text-secondary);"></i>
+            <span style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">Net Banking</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border-color);cursor:pointer;">
+            <input type="radio" name="payment" style="accent-color:var(--accent-primary);">
+            <i class="bi bi-cash-coin" style="font-size:1.2rem;color:var(--text-secondary);"></i>
+            <span style="font-family:'Orbitron',monospace;font-size:0.78rem;color:var(--text-primary);">Cash on Delivery</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="col-lg-5">
+      <div class="order-summary-card">
+        <h5 style="font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:20px;color:var(--accent-primary);">// Order Summary</h5>
+
+        <!-- Cart Items -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border-color);">
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div style="width:60px;height:60px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer1.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+            <div style="flex:1;"><div style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--text-primary);">Arduino Mega 2560 Pro</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 1</div></div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.88rem;color:var(--accent-primary);">₹1,899</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div style="width:60px;height:60px;background:var(--bg-secondary);border:1px solid var(--border-color);flex-shrink:0;overflow:hidden;"><img src="images/Jhoomer4.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(180deg);"></div>
+            <div style="flex:1;"><div style="font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--text-primary);">ESP32 Dev Board WiFi/BT</div><div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);">Qty: 3</div></div>
+            <div style="font-family:'Orbitron',monospace;font-size:0.88rem;color:var(--accent-primary);">₹1,497</div>
+          </div>
+        </div>
+
+        <!-- Coupon -->
+        <div style="display:flex;gap:0;margin-bottom:20px;">
+          <input type="text" class="input-luxury" placeholder="Enter coupon code" style="border-radius:0;flex:1;" value="TECH20">
+          <button class="newsletter-btn" style="white-space:nowrap;font-size:0.65rem;">Apply</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.3);margin-bottom:16px;">
+          <i class="bi bi-check-circle-fill" style="color:#39ff14;"></i>
+          <span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:#39ff14;">Coupon TECH20 applied — ₹679 saved!</span>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="summary-row"><span>Subtotal (2 items)</span><span>₹3,396</span></div>
+        <div class="summary-row"><span>Shipping</span><span style="color:#39ff14;">FREE</span></div>
+        <div class="summary-row"><span>Discount (TECH20)</span><span style="color:#39ff14;">−₹679</span></div>
+        <div class="summary-row"><span>GST (18%)</span><span>₹489</span></div>
+
+        <div class="summary-total">
+          <div class="summary-total-label">Total</div>
+          <div class="summary-total-price">₹3,206</div>
+        </div>
+
+        <button class="btn-luxury w-100 justify-content-center mt-4" style="font-size:0.72rem;padding:16px;" onclick="window.location='orders.html'">
+          <i class="bi bi-lock-fill"></i> Place Order Securely
+        </button>
+
+        <p style="text-align:center;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:12px;">
+          <i class="bi bi-shield-lock-fill" style="color:var(--accent-primary);"></i> Your payment is encrypted &amp; secure
+        </p>
+
+        <!-- Trust -->
+        <div style="display:flex;justify-content:center;gap:16px;padding-top:16px;border-top:1px solid var(--border-color);">
+          <div style="text-align:center;"><i class="bi bi-truck" style="color:var(--text-muted);font-size:1.2rem;"></i><div style="font-size:0.62rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Fast Ship</div></div>
+          <div style="text-align:center;"><i class="bi bi-shield-check" style="color:var(--text-muted);font-size:1.2rem;"></i><div style="font-size:0.62rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Secure</div></div>
+          <div style="text-align:center;"><i class="bi bi-arrow-counterclockwise" style="color:var(--text-muted);font-size:1.2rem;"></i><div style="font-size:0.62rem;color:var(--text-muted);font-family:'Space Mono',monospace;">Easy Return</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-luxury">
+  <div class="footer-bottom"><div class="container"><div class="d-flex justify-content-between flex-wrap gap-2"><p>© 2025 TechCore. All Rights Reserved.</p><p style="font-family:'Space Mono',monospace;font-size:0.68rem;"><i class="bi bi-shield-lock-fill" style="color:var(--accent-primary);"></i> 256-bit SSL Encrypted Checkout</p></div></div></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
